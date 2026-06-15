@@ -30,7 +30,7 @@ export default async function AdminAnalyticsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {events.map((evt) => (
+              {events.map((evt: any) => (
                 <tr key={evt.id} className="hover:bg-white/[0.02]">
                   <td className="px-6 py-4 whitespace-nowrap text-slate-400">
                     {new Date(evt.createdAt).toLocaleString()}
