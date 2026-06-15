@@ -1,0 +1,1 @@
+export { toolCategories } from "@/features/tools/tool-registry";

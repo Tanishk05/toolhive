@@ -1,0 +1,39 @@
+---
+title: "Feature-Based Architecture for Fast-Moving SaaS Teams"
+excerpt: "How to keep a growing product organized when tools, blog, billing, and analytics all ship in parallel."
+date: "2026-06-02"
+category: "strategy"
+tags: ["Architecture", "SaaS", "Codebase", "Scaling"]
+author: "marcus-chen"
+featured: false
+coverImage: "/blog/feature-based-architecture.svg"
+seoTitle: "Feature-Based Architecture for SaaS Teams | ToolHive"
+seoDescription: "Keep product areas isolated with a feature-based architecture that scales across tools and content."
+---
+
+## Build around boundaries
+
+Feature-based boundaries make it easier to scale because each domain owns its data, UI, and server logic.
+
+## A small example
+
+```ts
+// A feature module should expose an intentional API surface.
+export const blog = {
+  getPosts,
+  getCategories,
+  getRelatedPosts,
+};
+```
+
+## What to avoid
+
+- shared dumping grounds
+- leaky cross-domain imports
+- page-specific data logic
+
+## What to prefer
+
+- explicit feature APIs
+- server-only data loaders
+- stable content contracts

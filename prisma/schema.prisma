@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+}
+
+enum SubscriptionStatus {
+  active
+  past_due
+  canceled
+  trialing
+}
+
+enum PaymentStatus {
+  pending
+  succeeded
+  failed
+  refunded
+}
+
+model User {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId         String?          @unique
+  email           String           @unique
+  name            String?
+  avatarUrl       String?
+  role            String           @default("user")
+  bio             String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  subscriptions   Subscription[]
+  payments        Payment[]
+  savedTools      SavedTool[]
+  analyticsEvents AnalyticsEvent[]
+  contactMessages ContactMessage[]
+  blogPosts       BlogPost[]
+  auditLogs       AuditLog[]
+}
+
+model SavedTool {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  toolSlug  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, toolSlug])
+}
+
+model Category {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  label       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tools       Tool[]
+  blogPosts   BlogPost[]
+}
+
+model Tool {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug         String   @unique
+  name         String
+  summary      String
+  description  String
+  icon         String?
+  url          String?
+  featured     Boolean  @default(false)
+  published    Boolean  @default(false)
+  categoryId   String   @db.ObjectId
+  category     Category @relation(fields: [categoryId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BlogPost {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug       String    @unique
+  title      String
+  excerpt    String
+  content    String
+  coverImage String?
+  published  Boolean   @default(false)
+  categoryId String?   @db.ObjectId
+  category   Category? @relation(fields: [categoryId], references: [id])
+  authorId   String?   @db.ObjectId
+  author     User?     @relation(fields: [authorId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Subscription {
+  id              String             @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String             @db.ObjectId
+  user            User               @relation(fields: [userId], references: [id])
+  provider        String
+  providerPlanId  String
+  status          SubscriptionStatus @default(trialing)
+  currentPeriodAt DateTime?
+  endsAt          DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model Payment {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String        @db.ObjectId
+  user        User          @relation(fields: [userId], references: [id])
+  provider    String
+  providerRef String?
+  amount      Int
+  currency    String
+  status      PaymentStatus @default(pending)
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  name      String
+  source    String?
+  payload   Json?
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  name      String
+  email     String
+  subject   String
+  message   String
+  category  String?
+  priority  String?
+  type      String   @default("contact")
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NewsletterSubscriber {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+  unsubscribed Boolean  @default(false)
+}
+
+model AuditLog {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  action     String
+  resource   String
+  resourceId String?
+  userId     String?  @db.ObjectId
+  user       User?    @relation(fields: [userId], references: [id])
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
+
+model FeatureFlag {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  key         String   @unique
+  name        String
+  description String?
+  enabled     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

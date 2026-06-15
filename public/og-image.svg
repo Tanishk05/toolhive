@@ -1,0 +1,21 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617" />
+      <stop offset="0.5" stop-color="#0F172A" />
+      <stop offset="1" stop-color="#064E3B" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(920 140) rotate(135) scale(340 280)">
+      <stop stop-color="#34D399" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#34D399" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <circle cx="980" cy="140" r="78" fill="#34D399" fill-opacity="0.16" />
+  <circle cx="180" cy="480" r="120" fill="#38BDF8" fill-opacity="0.12" />
+  <text x="80" y="170" fill="#34D399" font-family="Arial, Helvetica, sans-serif" font-size="32" letter-spacing="8">TOOLHIVE</text>
+  <text x="80" y="290" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="700">Utility tools</text>
+  <text x="80" y="372" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="700">built to scale</text>
+  <text x="80" y="455" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="28">Search, sort, discover, and ship high-signal tools faster.</text>
+</svg>
