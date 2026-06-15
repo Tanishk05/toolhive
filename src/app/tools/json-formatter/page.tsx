@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { JsonFormatterLayout } from "@/features/json-formatter/components/json-formatter-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("json-formatter");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("json-formatter");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function JsonFormatterPage() {
-  const tool = getToolBySlug("json-formatter");
+export default async function JsonFormatterPage() {
+  const tool = await getToolBySlug("json-formatter");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

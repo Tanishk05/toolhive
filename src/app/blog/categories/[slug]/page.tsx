@@ -15,12 +15,12 @@ import { createBreadcrumbStructuredData, createItemListStructuredData, createMet
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return getBlogCategoryStaticPaths();
+export async function generateStaticParams() {
+  return await getBlogCategoryStaticPaths();
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
-  const category = getBlogCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
+  const category = await getBlogCategoryBySlug(params.slug);
 
   if (!category) {
     return {};
@@ -34,14 +34,14 @@ export function generateMetadata({ params }: Readonly<{ params: { slug: string }
   });
 }
 
-export default function BlogCategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const category = getBlogCategoryBySlug(params.slug);
+export default async function BlogCategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
+  const category = await getBlogCategoryBySlug(params.slug);
 
   if (!category) {
     notFound();
   }
 
-  const posts = getBlogPostsByCategory(category.slug);
+  const posts = await getBlogPostsByCategory(category.slug);
   const breadcrumbs = buildBlogCategoryBreadcrumbs(category);
 
   return (

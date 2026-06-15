@@ -6,36 +6,37 @@ import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
-import { buildCategoryBreadcrumbs, getCategoryBySlug, getToolsByCategory, toolCategories } from "@/features/tools/tool-registry";
+import { buildCategoryBreadcrumbs, getCategoryBySlug, getToolsByCategory, getToolCategories, getIconComponent } from "@/features/tools/tool-registry";
 import { createBreadcrumbStructuredData, createItemListStructuredData, createMetadata } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return toolCategories.map((category) => ({ slug: category.slug }));
+export async function generateStaticParams() {
+  const categories = await getToolCategories();
+  return categories.map((category) => ({ slug: category.slug }));
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
-  const category = getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
+  const category = await getCategoryBySlug(params.slug);
 
   if (!category) {
     return {};
   }
 
   return createMetadata({
-    title: category.seo.title,
-    description: category.seo.description,
-    path: category.seo.canonical,
+    title: category.seo.title ?? category.label,
+    description: category.seo.description ?? category.description,
+    path: category.seo.canonical ?? `/categories/${category.slug}`,
     keywords: [category.label, "ToolHive", "category"],
   });
 }
 
-export default function CategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const category = getCategoryBySlug(params.slug);
+export default async function CategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
+  const category = await getCategoryBySlug(params.slug);
 
   if (!category) {
     notFound();
   }
 
-  const tools = getToolsByCategory(category.slug);
+  const tools = await getToolsByCategory(category.slug);
   const breadcrumbs = buildCategoryBreadcrumbs(category);
   const itemList = createItemListStructuredData(tools.map((tool, index) => ({ name: tool.name, href: `/tools/${tool.slug}`, position: index + 1 })));
 
@@ -52,7 +53,7 @@ export default function CategoryPage({ params }: Readonly<{ params: { slug: stri
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {tools.map((tool) => {
-          const Icon = tool.icon;
+          const Icon = getIconComponent(tool.icon);
 
           return (
             <Card key={tool.slug} className="p-6">

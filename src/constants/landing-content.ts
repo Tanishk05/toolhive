@@ -1,56 +1,61 @@
-import { getFeaturedTools, sortTools, toolCategories, toolRegistry } from "@/features/tools/tool-registry";
-import { Zap, Smartphone, ShieldCheck, Download, Search, Globe } from "lucide-react";
+import { getFeaturedTools, sortTools, getToolCategories, getToolRegistry } from "@/features/tools/tool-registry";
 
-export const landingContent = {
-  hero: {
-    title: "Free Online Tools That Actually Save Time",
-    description:
-      "Generate QR codes, compress images, calculate GST, format JSON, and access dozens of free tools built for developers, creators, students, and businesses.",
-    quickSearches: ["QR Code Generator", "JSON Formatter", "SEO Snapshot", "Image Compressor", "Age Calculator"],
-  },
-  featuredTools: getFeaturedTools().map((tool) => ({
-    name: tool.name,
-    description: tool.description,
-    tags: tool.tags,
-    accent: tool.accent,
-    slug: tool.slug,
-  })),
-  popularTools: sortTools(toolRegistry, "popular").slice(0, 8),
-  categories: toolCategories.map((category) => ({
-    label: category.label,
-    description: category.description,
-    slug: category.slug,
-  })),
-  whyChooseUs: [
+
+export async function getLandingContent() {
+  const featuredTools = await getFeaturedTools();
+  const registry = await getToolRegistry();
+  const categories = await getToolCategories();
+
+  return {
+    hero: {
+      title: "Free Online Tools That Actually Save Time",
+      description:
+        "Generate QR codes, compress images, calculate GST, format JSON, and access dozens of free tools built for developers, creators, students, and businesses.",
+      quickSearches: ["QR Code Generator", "JSON Formatter", "SEO Snapshot", "Image Compressor", "Age Calculator"],
+    },
+    featuredTools: featuredTools.map((tool) => ({
+      name: tool.name,
+      description: tool.description,
+      tags: tool.tags,
+      accent: tool.accent,
+      slug: tool.slug,
+    })),
+    popularTools: sortTools(registry, "popular").slice(0, 8),
+    categories: categories.map((category) => ({
+      label: category.label,
+      description: category.description,
+      slug: category.slug,
+    })),
+    whyChooseUs: [
     {
       title: "Free to Use",
       description: "Access premium-grade utilities without paywalls, restrictive limits, or hidden fees.",
-      icon: Zap,
+      icon: "Zap",
     },
     {
       title: "Fast and Lightweight",
       description: "Our tools load instantly in your browser. No bloated pages or unnecessary scripts.",
-      icon: Search,
+      icon: "Search",
     },
     {
       title: "Mobile Friendly",
       description: "Designed to work perfectly on any device, whether you're at your desk or on the go.",
-      icon: Smartphone,
+      icon: "Smartphone",
     },
     {
       title: "Privacy Focused",
       description: "We process most data entirely in your browser. Your files and data remain yours.",
-      icon: ShieldCheck,
+      icon: "ShieldCheck",
     },
     {
       title: "No Installation Required",
       description: "No apps to download or extensions to install. Everything runs seamlessly on the web.",
-      icon: Download,
+      icon: "Download",
     },
     {
       title: "SEO Friendly Resources",
       description: "Access a library of metadata and structured data tools to boost your own rankings.",
-      icon: Globe,
+      icon: "Globe",
     },
   ],
   blogPosts: [
@@ -110,4 +115,5 @@ export const landingContent = {
       { label: "Disclaimer", href: "/disclaimer" },
     ],
   },
-} as const;
+  };
+}

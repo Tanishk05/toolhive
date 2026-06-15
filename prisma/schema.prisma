@@ -1,9 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
   provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 enum SubscriptionStatus {
@@ -51,27 +53,39 @@ model SavedTool {
 
 model Category {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String   @unique
-  label       String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tools       Tool[]
-  blogPosts   BlogPost[]
+  slug           String   @unique
+  label          String
+  description    String
+  seoTitle       String?
+  seoDescription String?
+  seoCanonical   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tools          Tool[]
+  blogPosts      BlogPost[]
 }
 
 model Tool {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug         String   @unique
-  name         String
-  summary      String
-  description  String
-  icon         String?
-  url          String?
-  featured     Boolean  @default(false)
-  published    Boolean  @default(false)
-  categoryId   String   @db.ObjectId
-  category     Category @relation(fields: [categoryId], references: [id])
+  slug           String   @unique
+  name           String
+  summary        String
+  description    String
+  icon           String?
+  url            String?
+  featured       Boolean  @default(false)
+  published      Boolean  @default(false)
+  premium        Boolean  @default(false)
+  popularity     Int      @default(0)
+  accent         String?
+  tags           String[] @default([])
+  searchTerms    String[] @default([])
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[] @default([])
+  seoCanonical   String?
+  categoryId     String   @db.ObjectId
+  category       Category @relation(fields: [categoryId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -79,11 +93,15 @@ model Tool {
 model BlogPost {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   slug       String    @unique
-  title      String
-  excerpt    String
-  content    String
-  coverImage String?
-  published  Boolean   @default(false)
+  title          String
+  excerpt        String
+  content        String
+  coverImage     String?
+  published      Boolean   @default(false)
+  featured       Boolean   @default(false)
+  tags           String[]  @default([])
+  seoTitle       String?
+  seoDescription String?
   categoryId String?   @db.ObjectId
   category   Category? @relation(fields: [categoryId], references: [id])
   authorId   String?   @db.ObjectId

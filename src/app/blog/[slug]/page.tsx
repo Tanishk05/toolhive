@@ -13,17 +13,18 @@ import {
   getRelatedBlogPosts,
   getBlogStaticPaths,
 } from "@/features/blog/blog-registry";
+import { ToolRecommendations } from "@/features/tools/components/tool-recommendations";
 import { AdUnit } from "@/components/ads/ad-unit";
 import { createArticleStructuredData, createBreadcrumbStructuredData, createMetadata, createPersonStructuredData } from "@/lib/seo";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return getBlogStaticPaths();
+export async function generateStaticParams() {
+  return await getBlogStaticPaths();
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
-  const post = getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
+  const post = await getBlogPostBySlug(params.slug);
 
   if (!post) {
     return {};
@@ -39,13 +40,13 @@ export function generateMetadata({ params }: Readonly<{ params: { slug: string }
 }
 
 export default async function BlogPostPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const post = getBlogPostBySlug(params.slug);
+  const post = await getBlogPostBySlug(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedBlogPosts(post, 3);
+  const relatedPosts = await getRelatedBlogPosts(post, 3);
   const breadcrumbs = buildBlogPostBreadcrumbs(post);
   const mdxContent = await renderBlogMdx({ source: post.body });
 
@@ -115,6 +116,8 @@ export default async function BlogPostPage({ params }: Readonly<{ params: { slug
           <div className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/50 p-6 md:p-8">
             {mdxContent}
           </div>
+
+          <ToolRecommendations relatedTags={post.tags} />
 
           <section className="space-y-4">
             <div>

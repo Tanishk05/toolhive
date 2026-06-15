@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { QrGeneratorLayout } from "@/features/qr-code/components/qr-generator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("qr-code-generator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("qr-code-generator");
   if (!tool) return {};
 
   return createMetadata({
@@ -23,8 +23,8 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function QrCodeGeneratorPage() {
-  const tool = getToolBySlug("qr-code-generator");
+export default async function QrCodeGeneratorPage() {
+  const tool = await getToolBySlug("qr-code-generator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

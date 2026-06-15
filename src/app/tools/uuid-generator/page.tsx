@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { UuidGeneratorLayout } from "@/features/uuid-generator/components/uuid-generator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("uuid-generator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("uuid-generator");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function UuidGeneratorPage() {
-  const tool = getToolBySlug("uuid-generator");
+export default async function UuidGeneratorPage() {
+  const tool = await getToolBySlug("uuid-generator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

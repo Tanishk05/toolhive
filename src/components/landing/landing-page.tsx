@@ -1,7 +1,16 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CalendarDays, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowRight, CalendarDays, ArrowUpRight, ChevronDown, Zap, Smartphone, ShieldCheck, Download, Search, Globe } from "lucide-react";
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  Zap,
+  Search,
+  Smartphone,
+  ShieldCheck,
+  Download,
+  Globe,
+};
 import Link from "next/link";
 import { LandingShell } from "@/components/landing/landing-shell";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -10,10 +19,9 @@ import { Card } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search";
 import { ToolCard } from "@/components/marketing/tool-card";
 import { AdUnit } from "@/components/ads/ad-unit";
-import { landingContent } from "@/constants/landing-content";
+import { type getLandingContent } from "@/constants/landing-content";
 
-export function LandingPage() {
-  const content = landingContent;
+export function LandingPage({ content }: { content: Awaited<ReturnType<typeof getLandingContent>> }) {
   return (
     <LandingShell>
       {/* Hero Section */}
@@ -105,7 +113,7 @@ export function LandingPage() {
       >
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {content.whyChooseUs.map((benefit, index) => {
-            const Icon = benefit.icon;
+            const Icon = ICON_MAP[benefit.icon] || Zap;
             return (
               <Reveal key={benefit.title} delay={0.05 * index}>
                 <Card className="h-full p-6 lg:p-8">
@@ -206,7 +214,7 @@ export function LandingPage() {
         </Reveal>
       </section>
       <AdUnit format="horizontal" slotId="landing-page-footer" />
-      <Footer />
+      <Footer content={content} />
     </LandingShell>
   );
 }
@@ -327,8 +335,7 @@ function BlogCard({
   );
 }
 
-function Footer() {
-  const content = landingContent;
+function Footer({ content }: { content: Awaited<ReturnType<typeof getLandingContent>> }) {
   return (
     <footer className="border-t border-border pt-16 mt-24">
       <div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]">

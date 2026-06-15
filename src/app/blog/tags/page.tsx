@@ -13,8 +13,8 @@ export const metadata: Metadata = createMetadata({
   keywords: ["blog tags", "ToolHive", "MDX"],
 });
 
-export default function BlogTagsPage() {
-  const tags = getBlogTags();
+export default async function BlogTagsPage() {
+  const tags = await getBlogTags();
   const breadcrumbs = buildBlogBreadcrumbs([{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Tags", href: "/blog/tags" }]);
 
   return (

@@ -3,33 +3,63 @@ import { ArrowRight, Clock3, Tag, User } from "lucide-react";
 import type { BlogAuthor, BlogHeading, BlogPost } from "@/features/blog/blog-types";
 import { Card } from "@/components/ui/card";
 
+export function FeaturedBlogPostCard({ post }: Readonly<{ post: Pick<BlogPost, "slug" | "title" | "excerpt" | "readingTime" | "categoryProfile" | "tagsProfile" | "publishedAt" | "coverImage" | "canonical"> }>) {
+  return (
+    <Card className="group relative overflow-hidden rounded-[2rem] p-0 transition-transform duration-300 hover:-translate-y-1 border-white/10 bg-slate-950/50">
+      <div className="grid lg:grid-cols-2 min-h-[400px]">
+        <div className="flex flex-col justify-center p-8 sm:p-12">
+          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.24em] text-emerald-300">
+            <span>{post.categoryProfile.label}</span>
+            <span className="inline-flex items-center gap-1 normal-case tracking-normal text-slate-400">
+              <Clock3 className="h-3.5 w-3.5" />
+              {post.readingTime}
+            </span>
+          </div>
+          <h3 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl transition-colors group-hover:text-emerald-300">{post.title}</h3>
+          <p className="mt-4 text-base leading-7 text-slate-300 line-clamp-3">{post.excerpt}</p>
+          <div className="mt-8 flex items-center justify-between gap-4">
+            <span className="text-sm text-slate-400">{post.publishedAt.toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</span>
+            <Link className="inline-flex items-center gap-2 font-medium text-emerald-300 transition group-hover:text-emerald-200" href={post.canonical}>
+              Read guide
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+        <div className="relative hidden lg:block bg-[linear-gradient(135deg,rgba(16,185,129,0.18),rgba(15,23,42,0.88),rgba(56,189,248,0.14))]">
+          {post.coverImage ? (
+            <img src={post.coverImage} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-overlay" />
+          ) : (
+            <div className="absolute inset-0 bg-slate-900/50" />
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 export function BlogPostCard({ post }: Readonly<{ post: Pick<BlogPost, "slug" | "title" | "excerpt" | "readingTime" | "categoryProfile" | "tagsProfile" | "publishedAt" | "coverImage" | "canonical"> }>) {
   return (
     <Card className="group flex h-full flex-col overflow-hidden p-0 transition-transform duration-300 hover:-translate-y-1">
-      <div className="flex min-h-44 flex-col justify-between bg-[linear-gradient(135deg,rgba(16,185,129,0.18),rgba(15,23,42,0.88),rgba(56,189,248,0.14))] p-6 ring-1 ring-white/10">
-        <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.24em] text-emerald-200">
+      <div className="relative min-h-48 overflow-hidden bg-[linear-gradient(135deg,rgba(16,185,129,0.1),rgba(15,23,42,0.8),rgba(56,189,248,0.1))]">
+        {post.coverImage && (
+           <img src={post.coverImage} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-105" />
+        )}
+      </div>
+      <div className="flex flex-1 flex-col p-6">
+        <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.24em] text-emerald-300">
           <span>{post.categoryProfile.label}</span>
-          <span className="inline-flex items-center gap-1 normal-case tracking-normal text-slate-200">
+          <span className="inline-flex items-center gap-1 normal-case tracking-normal text-slate-400">
             <Clock3 className="h-3.5 w-3.5" />
             {post.readingTime}
           </span>
         </div>
-        <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">{post.title}</h3>
-      </div>
-      <div className="flex flex-1 flex-col p-6">
-        <p className="text-sm leading-7 text-slate-300">{post.excerpt}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {post.tagsProfile.slice(0, 3).map((tag) => (
-            <span key={tag.slug} className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-              <Tag className="h-3 w-3" />
-              {tag.label}
-            </span>
-          ))}
-        </div>
-        <div className="mt-6 flex items-center justify-between gap-4 pt-4 text-sm text-slate-400">
+        <h3 className="mt-4 text-xl font-semibold tracking-tight text-white transition-colors group-hover:text-emerald-300">{post.title}</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300 line-clamp-2">{post.excerpt}</p>
+        
+        <div className="mt-6 flex items-center justify-between gap-4 pt-4 border-t border-white/5 text-sm text-slate-400">
           <span>{post.publishedAt.toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}</span>
           <Link className="inline-flex items-center gap-2 font-medium text-white transition group-hover:text-emerald-300" href={post.canonical}>
-            Read post
+            Read article
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

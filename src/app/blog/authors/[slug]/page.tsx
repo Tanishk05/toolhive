@@ -15,12 +15,12 @@ import { createBreadcrumbStructuredData, createItemListStructuredData, createMet
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return getBlogAuthorStaticPaths();
+export async function generateStaticParams() {
+  return await getBlogAuthorStaticPaths();
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
-  const author = getBlogAuthorBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
+  const author = await getBlogAuthorBySlug(params.slug);
 
   if (!author) {
     return {};
@@ -34,14 +34,14 @@ export function generateMetadata({ params }: Readonly<{ params: { slug: string }
   });
 }
 
-export default function BlogAuthorPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const author = getBlogAuthorBySlug(params.slug);
+export default async function BlogAuthorPage({ params }: Readonly<{ params: { slug: string } }>) {
+  const author = await getBlogAuthorBySlug(params.slug);
 
   if (!author) {
     notFound();
   }
 
-  const posts = getBlogPostsByAuthor(author.slug);
+  const posts = await getBlogPostsByAuthor(author.slug);
   const breadcrumbs = buildBlogAuthorBreadcrumbs(author);
 
   return (

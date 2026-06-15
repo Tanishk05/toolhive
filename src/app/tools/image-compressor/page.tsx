@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { ImageCompressorLayout } from "@/features/image-compressor/components/image-compressor-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("image-compressor");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("image-compressor");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function ImageCompressorPage() {
-  const tool = getToolBySlug("image-compressor");
+export default async function ImageCompressorPage() {
+  const tool = await getToolBySlug("image-compressor");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

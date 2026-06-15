@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { AgeCalculatorLayout } from "@/features/age-calculator/components/age-calculator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("age-calculator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("age-calculator");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function AgeCalculatorPage() {
-  const tool = getToolBySlug("age-calculator");
+export default async function AgeCalculatorPage() {
+  const tool = await getToolBySlug("age-calculator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

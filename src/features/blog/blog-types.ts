@@ -1,9 +1,5 @@
-export type BlogAuthorSlug = "ava-patel" | "marcus-chen" | "sophia-rivera";
-
-export type BlogCategorySlug = "engineering" | "seo" | "strategy" | "content";
-
 export type BlogAuthor = {
-  slug: BlogAuthorSlug;
+  slug: string;
   name: string;
   role: string;
   bio: string;
@@ -11,10 +7,11 @@ export type BlogAuthor = {
   location: string;
   website?: string;
   social?: readonly { label: string; href: string }[];
+  count?: number;
 };
 
 export type BlogCategory = {
-  slug: BlogCategorySlug;
+  slug: string;
   label: string;
   description: string;
   seo: {
@@ -22,6 +19,7 @@ export type BlogCategory = {
     description: string;
     canonical: string;
   };
+  count?: number;
 };
 
 export type BlogHeading = {
@@ -30,22 +28,19 @@ export type BlogHeading = {
   depth: 2 | 3;
 };
 
-export type BlogPostFrontmatter = {
+export type BlogPost = {
+  slug: string;
   title: string;
   excerpt: string;
   date: string;
-  category: BlogCategorySlug;
+  category: string;
   tags: string[];
-  author: BlogAuthorSlug;
-  featured?: boolean;
-  published?: boolean;
+  author: string;
+  featured: boolean;
+  published: boolean;
   coverImage?: string;
   seoTitle?: string;
   seoDescription?: string;
-};
-
-export type BlogPost = BlogPostFrontmatter & {
-  slug: string;
   body: string;
   content: string;
   readingTime: string;

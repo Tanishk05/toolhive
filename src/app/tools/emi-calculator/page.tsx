@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { EmiCalculatorLayout } from "@/features/emi-calculator/components/emi-calculator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("emi-calculator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("emi-calculator");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function EmiCalculatorPage() {
-  const tool = getToolBySlug("emi-calculator");
+export default async function EmiCalculatorPage() {
+  const tool = await getToolBySlug("emi-calculator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

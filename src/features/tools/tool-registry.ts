@@ -1,17 +1,4 @@
-import {
-  QrCode,
-  Calculator,
-  CalendarHeart,
-  ArrowRightLeft,
-  Braces,
-  Landmark,
-  KeyRound,
-  Fingerprint,
-  Binary,
-  ImageMinus,
-  ShieldAlert,
-  type LucideIcon,
-} from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 export type ToolCategorySlug =
   | "productivity"
@@ -36,7 +23,7 @@ export type ToolRegistryEntry = {
   category: ToolCategorySlug;
   categoryLabel: string;
   categoryDescription: string;
-  icon: LucideIcon;
+  icon: string | null;
   featured: boolean;
   premium: boolean;
   popularity: number;
@@ -49,361 +36,96 @@ export type ToolRegistryEntry = {
 };
 
 export type ToolCategoryRegistryEntry = {
-  slug: ToolCategorySlug;
+  id: string;
+  slug: string;
   label: string;
   description: string;
   seo: {
-    title: string;
-    description: string;
-    canonical: string;
+    title: string | null;
+    description: string | null;
+    canonical: string | null;
   };
 };
 
-export const toolRegistry: readonly ToolRegistryEntry[] = [
-  {
-    id: "qr-code-generator",
-    name: "QR Code Generator",
-    slug: "qr-code-generator",
-    description: "Generate static QR codes for URLs, WiFi, vCards, and more with live customization and SVG/PDF export.",
-    summary: "A robust QR code generator for teams needing instant, print-ready codes.",
-    category: "productivity",
-    categoryLabel: "Productivity",
-    categoryDescription: "Workflow accelerators, repeatable utilities, and personal ops helpers.",
-    icon: QrCode,
-    featured: true,
-    premium: false,
-    popularity: 99,
-    addedAt: "2026-06-14",
-    accent: "from-emerald-400/30 to-blue-400/10",
-    tags: ["QR Code", "Generator", "Utility"],
-    searchTerms: ["qr", "barcode", "generator", "wifi", "vcard", "url", "scan"],
-    seo: {
-      title: "QR Code Generator | ToolHive",
-      description: "Generate customized QR codes instantly for URLs, WiFi, vCards, and text. Download as PNG, SVG, or PDF.",
-      keywords: ["QR code generator", "QR code", "create QR code", "SVG QR code", "ToolHive"],
-      canonical: "/tools/qr-code-generator",
-    },
-  },
-  {
-    id: "gst-calculator",
-    name: "GST Calculator",
-    slug: "gst-calculator",
-    description: "Calculate GST amount and total price with reverse GST calculation capabilities.",
-    summary: "Instant tool to calculate standard and reverse GST components for billing and accounting.",
-    category: "business",
-    categoryLabel: "Business",
-    categoryDescription: "Pricing, planning, finance, and conversion support tools.",
-    icon: Calculator,
-    featured: true,
-    premium: false,
-    popularity: 90,
-    addedAt: "2026-06-15",
-    accent: "from-blue-500/30 to-indigo-400/10",
-    tags: ["GST", "Calculator", "Tax", "Finance"],
-    searchTerms: ["tax", "invoice", "gst", "reverse gst", "bill", "accounting"],
-    seo: {
-      title: "GST Calculator | ToolHive",
-      description: "Free online GST Calculator. Easily calculate GST amounts, total price, and perform reverse GST calculations for invoices and billing.",
-      keywords: ["GST calculator", "reverse GST calculator", "tax calculator", "Indian GST", "ToolHive"],
-      canonical: "/tools/gst-calculator",
-    },
-  },
-  {
-    id: "age-calculator",
-    name: "Age Calculator",
-    slug: "age-calculator",
-    description: "Calculate exact age in years, months, and days from your date of birth.",
-    summary: "A simple chronological age calculator providing precise metrics like total days and next birthday countdown.",
-    category: "productivity",
-    categoryLabel: "Productivity",
-    categoryDescription: "Workflow accelerators, repeatable utilities, and personal ops helpers.",
-    icon: CalendarHeart,
-    featured: false,
-    premium: false,
-    popularity: 85,
-    addedAt: "2026-06-15",
-    accent: "from-rose-500/30 to-orange-400/10",
-    tags: ["Age", "Calculator", "Date", "Time"],
-    searchTerms: ["date of birth", "dob", "how old am i", "age difference", "chronological"],
-    seo: {
-      title: "Age Calculator | Exact Chronological Age | ToolHive",
-      description: "Free online Age Calculator. Calculate your exact age in years, months, and days, along with total days lived and your next birthday.",
-      keywords: ["Age calculator", "calculate age", "date of birth calculator", "chronological age", "ToolHive"],
-      canonical: "/tools/age-calculator",
-    },
-  },
-  {
-    id: "unit-converter",
-    name: "Unit Converter",
-    slug: "unit-converter",
-    description: "Convert instantly between lengths, weights, temperatures, and more.",
-    summary: "A comprehensive unit conversion tool for everyday measurements.",
-    category: "productivity",
-    categoryLabel: "Productivity",
-    categoryDescription: "Workflow accelerators, repeatable utilities, and personal ops helpers.",
-    icon: ArrowRightLeft,
-    featured: true,
-    premium: false,
-    popularity: 88,
-    addedAt: "2026-06-15",
-    accent: "from-cyan-500/30 to-blue-400/10",
-    tags: ["Unit", "Converter", "Measurement", "Length", "Weight", "Temperature"],
-    searchTerms: ["convert", "measure", "metric", "imperial", "length", "weight", "temperature"],
-    seo: {
-      title: "Unit Converter | Length, Weight & Temperature | ToolHive",
-      description: "Free online Unit Converter. Instantly convert between metric and imperial units for length, weight, temperature, and more.",
-      keywords: ["Unit converter", "length converter", "weight converter", "temperature converter", "ToolHive"],
-      canonical: "/tools/unit-converter",
-    },
-  },
-  {
-    id: "json-formatter",
-    name: "JSON Formatter",
-    slug: "json-formatter",
-    description: "Format, validate, and minify JSON payloads instantly in your browser.",
-    summary: "A robust developer tool to prettify or compress JSON data with instant error validation.",
-    category: "developer",
-    categoryLabel: "Developer",
-    categoryDescription: "Builders, validators, formatters, and API-centric utilities.",
-    icon: Braces,
-    featured: true,
-    premium: false,
-    popularity: 92,
-    addedAt: "2026-06-15",
-    accent: "from-amber-500/30 to-orange-400/10",
-    tags: ["JSON", "Formatter", "Validator", "Minifier", "Developer"],
-    searchTerms: ["json", "format", "beautify", "minify", "validate", "lint"],
-    seo: {
-      title: "JSON Formatter & Validator | ToolHive",
-      description: "Free online JSON Formatter and Validator. Prettify, minify, and validate your JSON data instantly in your browser. No data sent to servers.",
-      keywords: ["JSON formatter", "JSON validator", "JSON beautifier", "JSON minifier", "developer tools", "ToolHive"],
-      canonical: "/tools/json-formatter",
-    },
-  },
-  {
-    id: "emi-calculator",
-    name: "EMI Calculator",
-    slug: "emi-calculator",
-    description: "Calculate your Equated Monthly Installment (EMI) for home, car, or personal loans.",
-    summary: "Instant loan calculator with visual breakdowns of principal and interest.",
-    category: "business",
-    categoryLabel: "Business",
-    categoryDescription: "Pricing, planning, finance, and conversion support tools.",
-    icon: Landmark,
-    featured: true,
-    premium: false,
-    popularity: 91,
-    addedAt: "2026-06-15",
-    accent: "from-blue-500/30 to-violet-400/10",
-    tags: ["EMI", "Calculator", "Loan", "Finance", "Mortgage"],
-    searchTerms: ["emi", "loan", "mortgage", "interest", "finance", "payment"],
-    seo: {
-      title: "EMI Calculator | Home & Car Loan Calculator | ToolHive",
-      description: "Free online EMI Calculator. Calculate Equated Monthly Installments for home, car, and personal loans instantly with a visual chart breakdown.",
-      keywords: ["EMI calculator", "loan calculator", "mortgage calculator", "home loan calculator", "ToolHive"],
-      canonical: "/tools/emi-calculator",
-    },
-  },
-  {
-    id: "password-generator",
-    name: "Password Generator",
-    slug: "password-generator",
-    description: "Generate cryptographically secure passwords instantly in your browser.",
-    summary: "Create strong, random passwords with customizable parameters to keep your accounts safe.",
-    category: "developer",
-    categoryLabel: "Security",
-    categoryDescription: "Tools for encryption, generation, and data safety.",
-    icon: KeyRound,
-    featured: true,
-    premium: false,
-    popularity: 90,
-    addedAt: "2026-06-15",
-    accent: "from-emerald-500/30 to-teal-400/10",
-    tags: ["Password", "Generator", "Security", "Crypto", "Random"],
-    searchTerms: ["password", "generator", "secure", "random", "passcode", "key"],
-    seo: {
-      title: "Secure Password Generator | ToolHive",
-      description: "Free online secure Password Generator. Create cryptographically strong passwords instantly in your browser. 100% private and offline capable.",
-      keywords: ["Password generator", "secure password", "random password generator", "strong password", "ToolHive"],
-      canonical: "/tools/password-generator",
-    },
-  },
-  {
-    id: "uuid-generator",
-    name: "UUID Generator",
-    slug: "uuid-generator",
-    description: "Generate cryptographically secure Version 4 UUIDs instantly in your browser.",
-    summary: "Create multiple universally unique identifiers (v4) with custom formatting.",
-    category: "developer",
-    categoryLabel: "Developer",
-    categoryDescription: "Builders, validators, formatters, and API-centric utilities.",
-    icon: Fingerprint,
-    featured: true,
-    premium: false,
-    popularity: 87,
-    addedAt: "2026-06-15",
-    accent: "from-purple-500/30 to-pink-400/10",
-    tags: ["UUID", "Generator", "Developer", "Crypto", "GUID"],
-    searchTerms: ["uuid", "guid", "generator", "unique", "identifier", "v4"],
-    seo: {
-      title: "UUID/GUID Generator (v4) | ToolHive",
-      description: "Free online UUID Generator. Generate up to 500 cryptographically secure Version 4 UUIDs (GUIDs) instantly in your browser.",
-      keywords: ["UUID generator", "GUID generator", "v4 UUID", "random UUID", "ToolHive"],
-      canonical: "/tools/uuid-generator",
-    },
-  },
-  {
-    id: "base64-encoder-decoder",
-    name: "Base64 Encoder / Decoder",
-    slug: "base64-encoder-decoder",
-    description: "Easily encode text to Base64 or decode Base64 back to text with full UTF-8 support.",
-    summary: "Fast, privacy-friendly Base64 encoding and decoding tool with emoji support.",
-    category: "developer",
-    categoryLabel: "Developer",
-    categoryDescription: "Builders, validators, formatters, and API-centric utilities.",
-    icon: Binary,
-    featured: false,
-    premium: false,
-    popularity: 88,
-    addedAt: "2026-06-15",
-    accent: "from-blue-500/30 to-indigo-400/10",
-    tags: ["Base64", "Encode", "Decode", "Developer", "Converter"],
-    searchTerms: ["base64", "encoder", "decoder", "btoa", "atob", "convert", "format"],
-    seo: {
-      title: "Base64 Encoder and Decoder | ToolHive",
-      description: "Free online Base64 Encoder and Decoder. Safely convert text, emojis, and code to and from Base64 formats with full UTF-8 support.",
-      keywords: ["Base64 encoder", "Base64 decoder", "decode Base64", "encode Base64", "ToolHive"],
-      canonical: "/tools/base64-encoder-decoder",
-    },
-  },
-  {
-    id: "image-compressor",
-    name: "Image Compressor",
-    slug: "image-compressor",
-    description: "Compress JPEG, PNG, and WebP images instantly in your browser without losing quality.",
-    summary: "Fast, offline-capable image optimization tool for perfect web performance.",
-    category: "content",
-    categoryLabel: "Media",
-    categoryDescription: "Video, audio, and image manipulation tools.",
-    icon: ImageMinus,
-    featured: true,
-    premium: false,
-    popularity: 94,
-    addedAt: "2026-06-15",
-    accent: "from-orange-500/30 to-amber-400/10",
-    tags: ["Image", "Compressor", "Optimize", "WebP", "JPEG", "PNG", "Media"],
-    searchTerms: ["image", "compress", "optimize", "reduce", "size", "picture", "photo"],
-    seo: {
-      title: "Free Online Image Compressor | ToolHive",
-      description: "Compress and optimize images (JPEG, PNG, WebP) instantly within your browser. 100% private, no server uploads, offline capable.",
-      keywords: ["Image compressor", "reduce image size", "optimize images", "photo compressor", "ToolHive"],
-      canonical: "/tools/image-compressor",
-    },
-  },
-  {
-    id: "jwt-decoder",
-    name: "JWT Decoder",
-    slug: "jwt-decoder",
-    description: "Decode JSON Web Tokens (JWT) instantly to view header, payload, and signature data.",
-    summary: "Fast, offline-capable JWT parsing and debugging tool for developers.",
-    category: "developer",
-    categoryLabel: "Developer",
-    categoryDescription: "Builders, validators, formatters, and API-centric utilities.",
-    icon: ShieldAlert,
-    featured: false,
-    premium: false,
-    popularity: 91,
-    addedAt: "2026-06-15",
-    accent: "from-red-500/30 to-rose-400/10",
-    tags: ["JWT", "Decoder", "Auth", "Token", "Developer", "JSON"],
-    searchTerms: ["jwt", "decode", "token", "json web token", "auth", "parser", "viewer"],
-    seo: {
-      title: "JWT Decoder & Parser | ToolHive",
-      description: "Free online JWT Decoder. Easily parse and decode JSON Web Tokens into readable header and payload components right in your browser.",
-      keywords: ["JWT decoder", "parse JWT", "decode JSON web token", "JWT viewer", "ToolHive"],
-      canonical: "/tools/jwt-decoder",
-    },
-  },
-] as const;
+import { prisma } from "@/lib/prisma";
+import type { Prisma, Category } from "@prisma/client";
+import * as Icons from "lucide-react";
 
-
-export const toolCategories: readonly ToolCategoryRegistryEntry[] = [
-  {
-    slug: "productivity",
-    label: "Productivity",
-    description: "Workflow accelerators, repeatable utilities, and personal ops helpers.",
-    seo: {
-      title: "Productivity Tools | ToolHive",
-      description: "Workflow accelerators and everyday productivity utilities.",
-      canonical: "/categories/productivity",
-    },
-  },
-  {
-    slug: "developer",
-    label: "Developer",
-    description: "Builders, validators, formatters, and API-centric utilities.",
-    seo: {
-      title: "Developer Tools | ToolHive",
-      description: "Developer utilities for formatting, validation, and API workflows.",
-      canonical: "/categories/developer",
-    },
-  },
-  {
-    slug: "business",
-    label: "Business",
-    description: "Pricing, planning, finance, and conversion support tools.",
-    seo: {
-      title: "Business Tools | ToolHive",
-      description: "Business utilities for planning, pricing, and operations.",
-      canonical: "/categories/business",
-    },
-  },
-  {
-    slug: "content",
-    label: "Content",
-    description: "Publishing aids, editorial workflows, and distribution primitives.",
-    seo: {
-      title: "Content Tools | ToolHive",
-      description: "Editorial and publishing utilities for content teams.",
-      canonical: "/categories/content",
-    },
-  },
-  {
-    slug: "analytics",
-    label: "Analytics",
-    description: "Event capture, dashboards, and product intelligence surfaces.",
-    seo: {
-      title: "Analytics Tools | ToolHive",
-      description: "Event, telemetry, and product intelligence utilities.",
-      canonical: "/categories/analytics",
-    },
-  },
-  {
-    slug: "monetization",
-    label: "Monetization",
-    description: "Subscriptions, payments, and premium access management.",
-    seo: {
-      title: "Monetization Tools | ToolHive",
-      description: "Tools for subscriptions, access control, and payments.",
-      canonical: "/categories/monetization",
-    },
-  },
-] as const;
-
-export function getToolBySlug(slug: string) {
-  return toolRegistry.find((tool) => tool.slug === slug);
+export function getIconComponent(iconName: string | null): LucideIcon {
+  if (!iconName) return Icons.Wrench as LucideIcon;
+  const icon = (Icons as Record<string, unknown>)[iconName];
+  return (icon || Icons.Wrench) as LucideIcon;
 }
 
-export function getCategoryBySlug(slug: string) {
-  return toolCategories.find((category) => category.slug === slug);
+export async function getToolCategories(): Promise<ToolCategoryRegistryEntry[]> {
+  const categories = await prisma.category.findMany();
+  return categories.map((cat: Category) => ({
+    id: cat.id,
+    slug: cat.slug,
+    label: cat.label,
+    description: cat.description,
+    seo: {
+      title: cat.seoTitle,
+      description: cat.seoDescription,
+      canonical: cat.seoCanonical,
+    }
+  }));
 }
 
-export function getFeaturedTools() {
-  return toolRegistry.filter((tool) => tool.featured);
+export async function getToolRegistry(): Promise<ToolRegistryEntry[]> {
+  const tools = await prisma.tool.findMany({
+    where: { published: true },
+    include: { category: true }
+  });
+
+  type PrismaToolWithCategory = Prisma.ToolGetPayload<{
+    include: { category: true }
+  }>;
+
+  return tools.map((tool: PrismaToolWithCategory) => ({
+    id: tool.id,
+    name: tool.name,
+    slug: tool.slug,
+    description: tool.description,
+    category: tool.category.slug as ToolCategorySlug,
+    categoryLabel: tool.category.label,
+    categoryDescription: tool.category.description,
+    icon: tool.icon,
+    featured: tool.featured,
+    premium: tool.premium,
+    popularity: tool.popularity,
+    addedAt: tool.createdAt.toISOString(),
+    accent: tool.accent || "from-blue-500/30 to-indigo-400/10",
+    tags: tool.tags,
+    searchTerms: tool.searchTerms,
+    summary: tool.summary,
+    seo: {
+      title: tool.seoTitle || "",
+      description: tool.seoDescription || "",
+      keywords: tool.seoKeywords,
+      canonical: tool.seoCanonical || "",
+    }
+  }));
 }
 
-export function getRecentlyAddedTools(limit = 3) {
-  return [...toolRegistry]
+export async function getToolBySlug(slug: string) {
+  const tools = await getToolRegistry();
+  return tools.find((tool) => tool.slug === slug);
+}
+
+export async function getCategoryBySlug(slug: string) {
+  const categories = await getToolCategories();
+  return categories.find((category) => category.slug === slug);
+}
+
+export async function getFeaturedTools() {
+  const tools = await getToolRegistry();
+  return tools.filter((tool) => tool.featured);
+}
+
+export async function getRecentlyAddedTools(limit = 3) {
+  const tools = await getToolRegistry();
+  return [...tools]
     .sort((left, right) => new Date(right.addedAt).getTime() - new Date(left.addedAt).getTime())
     .slice(0, limit);
 }
@@ -425,14 +147,16 @@ export function sortTools<TTool extends Pick<ToolRegistryEntry, "name" | "popula
   return sorted.sort((left, right) => left.name.localeCompare(right.name));
 }
 
-export function getToolsByCategory(categorySlug: ToolCategorySlug) {
-  return toolRegistry.filter((tool) => tool.category === categorySlug);
+export async function getToolsByCategory(categorySlug: string) {
+  const tools = await getToolRegistry();
+  return tools.filter((tool) => tool.category === categorySlug);
 }
 
-export function searchTools(query: string, options?: { category?: ToolCategorySlug; featuredOnly?: boolean; premiumOnly?: boolean }) {
+export async function searchTools(query: string, options?: { category?: ToolCategorySlug; featuredOnly?: boolean; premiumOnly?: boolean }) {
   const normalizedQuery = query.trim().toLowerCase();
+  const tools = await getToolRegistry();
 
-  return toolRegistry.filter((tool) => {
+  return tools.filter((tool) => {
     const matchesQuery =
       normalizedQuery.length === 0 ||
       [tool.name, tool.slug, tool.description, tool.summary, ...tool.tags, ...tool.searchTerms].some((value) =>
@@ -446,10 +170,11 @@ export function searchTools(query: string, options?: { category?: ToolCategorySl
   });
 }
 
-export function searchCategories(query: string) {
+export async function searchCategories(query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  const categories = await getToolCategories();
 
-  return toolCategories.filter((category) => {
+  return categories.filter((category) => {
     if (normalizedQuery.length === 0) {
       return true;
     }
@@ -475,12 +200,13 @@ export function buildCategoryBreadcrumbs(category: ToolCategoryRegistryEntry) {
   ] as const;
 }
 
-export function getRecommendedTools(currentToolSlug: string, limit = 3) {
-  const currentTool = getToolBySlug(currentToolSlug);
+export async function getRecommendedTools(currentToolSlug: string, limit = 3) {
+  const tools = await getToolRegistry();
+  const currentTool = tools.find((t) => t.slug === currentToolSlug);
   if (!currentTool) return [];
 
   // 1. Get tools in the same category (excluding current)
-  const sameCategory = toolRegistry.filter(
+  const sameCategory = tools.filter(
     (tool) => tool.category === currentTool.category && tool.slug !== currentToolSlug
   );
 
@@ -493,7 +219,7 @@ export function getRecommendedTools(currentToolSlug: string, limit = 3) {
     const existingSlugs = new Set([currentToolSlug, ...sortedCategory.map((t) => t.slug)]);
     
     const otherPopular = sortTools(
-      toolRegistry.filter((tool) => !existingSlugs.has(tool.slug)),
+      tools.filter((tool) => !existingSlugs.has(tool.slug)),
       "popular"
     ).slice(0, needed);
     
@@ -501,4 +227,35 @@ export function getRecommendedTools(currentToolSlug: string, limit = 3) {
   }
 
   return sortedCategory.slice(0, limit);
+}
+
+export async function getToolsRelatedToTags(tags: string[], limit = 3) {
+  const normalizedTags = tags.map((t) => t.toLowerCase());
+  const tools = await getToolRegistry();
+
+  const scoredTools = tools.map((tool) => {
+    const toolKeywords = [...tool.tags, ...tool.searchTerms, tool.name, tool.categoryLabel].map((t) => t.toLowerCase());
+    const sharedTags = toolKeywords.filter((keyword) => normalizedTags.some(t => t.includes(keyword) || keyword.includes(t)));
+    let score = sharedTags.length * 3;
+    if (tool.featured) score += 2;
+    return { tool, score };
+  });
+
+  const related = scoredTools
+    .filter((t) => t.score > 0)
+    .sort((left, right) => right.score - left.score || right.tool.popularity - left.tool.popularity)
+    .slice(0, limit)
+    .map(({ tool }) => tool);
+
+  // Fallback to popular tools if we don't have enough highly related ones
+  if (related.length < limit) {
+    const existingSlugs = new Set(related.map((t) => t.slug));
+    const fallback = sortTools(
+      tools.filter((tool) => !existingSlugs.has(tool.slug)),
+      "popular"
+    ).slice(0, limit - related.length);
+    return [...related, ...fallback];
+  }
+
+  return related;
 }

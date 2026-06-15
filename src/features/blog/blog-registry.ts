@@ -1,9 +1,3 @@
-import "server-only";
-
-import fs from "node:fs";
-import path from "node:path";
-import { cache } from "react";
-import matter from "gray-matter";
 import readingTime from "reading-time";
 import GithubSlugger from "github-slugger";
 import { toString } from "mdast-util-to-string";
@@ -13,134 +7,16 @@ import remarkMdx from "remark-mdx";
 import remarkParse from "remark-parse";
 import type { Heading } from "mdast";
 import { visit } from "unist-util-visit";
-import { z } from "zod";
 import { createSitemapEntry } from "@/lib/seo";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import type {
   BlogAuthor,
-  BlogAuthorSlug,
   BlogCategory,
-  BlogCategorySlug,
   BlogHeading,
   BlogPost,
-  BlogPostFrontmatter,
   BlogTag,
 } from "./blog-types";
-
-const blogRoot = path.join(process.cwd(), "src/content/blog/posts");
-
-const blogFrontmatterSchema = z.object({
-  title: z.string().min(1),
-  excerpt: z.string().min(1),
-  date: z.string().min(1),
-  category: z.enum(["engineering", "seo", "strategy", "content"]),
-  tags: z.array(z.string().min(1)).default([]),
-  author: z.enum(["ava-patel", "marcus-chen", "sophia-rivera"]),
-  featured: z.boolean().default(false),
-  published: z.boolean().default(true),
-  coverImage: z.string().optional(),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-});
-
-export const blogAuthors: readonly BlogAuthor[] = [
-  {
-    slug: "ava-patel",
-    name: "Ava Patel",
-    role: "Editorial Product Lead",
-    bio: "Builds content systems that help utility products earn trust before the first click.",
-    avatarLabel: "AP",
-    location: "San Francisco, CA",
-    website: "https://example.com/ava-patel",
-    social: [{ label: "X", href: "https://x.com/ava-patel" }],
-  },
-  {
-    slug: "marcus-chen",
-    name: "Marcus Chen",
-    role: "Principal Engineer",
-    bio: "Focuses on static-first architectures, search performance, and maintainable content pipelines.",
-    avatarLabel: "MC",
-    location: "Toronto, CA",
-    website: "https://example.com/marcus-chen",
-    social: [{ label: "GitHub", href: "https://github.com/marcus-chen" }],
-  },
-  {
-    slug: "sophia-rivera",
-    name: "Sophia Rivera",
-    role: "Content Strategist",
-    bio: "Turns product capabilities into editorial systems that can scale without losing clarity.",
-    avatarLabel: "SR",
-    location: "Austin, TX",
-    social: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/sophia-rivera" }],
-  },
-] as const;
-
-export const blogCategories: readonly BlogCategory[] = [
-  {
-    slug: "engineering",
-    label: "Engineering",
-    description: "Static generation, architecture boundaries, and implementation patterns.",
-    seo: {
-      title: "Engineering Articles | ToolHive Blog",
-      description: "Engineering essays about static generation, architecture, and scalable systems.",
-      canonical: "/blog/categories/engineering",
-    },
-  },
-  {
-    slug: "seo",
-    label: "SEO",
-    description: "Metadata strategy, structured data, and search visibility tactics.",
-    seo: {
-      title: "SEO Articles | ToolHive Blog",
-      description: "SEO playbooks for technical product and content teams.",
-      canonical: "/blog/categories/seo",
-    },
-  },
-  {
-    slug: "strategy",
-    label: "Strategy",
-    description: "Product positioning, content systems, and GTM structure.",
-    seo: {
-      title: "Strategy Articles | ToolHive Blog",
-      description: "Strategy posts on product growth, positioning, and scalable content systems.",
-      canonical: "/blog/categories/strategy",
-    },
-  },
-  {
-    slug: "content",
-    label: "Content",
-    description: "Editorial structure, reusable templates, and content operations.",
-    seo: {
-      title: "Content Articles | ToolHive Blog",
-      description: "Content operations and editorial structure for product-led teams.",
-      canonical: "/blog/categories/content",
-    },
-  },
-] as const;
-
-function loadPostSlugs() {
-  return fs
-    .readdirSync(blogRoot)
-    .filter((fileName) => fileName.endsWith(".mdx"))
-    .map((fileName) => fileName.replace(/\.mdx$/, ""));
-}
-
-function getAuthorProfile(slug: BlogAuthorSlug) {
-  const author = blogAuthors.find((item) => item.slug === slug);
-  if (!author) {
-    throw new Error(`Unknown blog author: ${slug}`);
-  }
-
-  return author;
-}
-
-function getCategoryProfile(slug: BlogCategorySlug) {
-  const category = blogCategories.find((item) => item.slug === slug);
-  if (!category) {
-    throw new Error(`Unknown blog category: ${slug}`);
-  }
-
-  return category;
-}
 
 function slugify(value: string) {
   return value
@@ -174,37 +50,194 @@ function extractHeadings(body: string): BlogHeading[] {
   return headings;
 }
 
-function normalizeFrontmatter(frontmatter: unknown): BlogPostFrontmatter {
-  return blogFrontmatterSchema.parse(frontmatter);
+type PrismaBlogPostWithRelations = Prisma.BlogPostGetPayload<{
+  include: {
+    category: true;
+    author: true;
+  };
+}>;
+
+function mapPrismaPostToBlogPost(post: PrismaBlogPostWithRelations): BlogPost {
+  const headings = extractHeadings(post.content);
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.createdAt.toISOString(),
+    category: post.category?.slug ?? "",
+    tags: post.tags,
+    author: post.author?.name ?? "Unknown Author",
+    featured: post.featured,
+    published: post.published,
+    coverImage: post.coverImage ?? undefined,
+    seoTitle: post.seoTitle ?? undefined,
+    seoDescription: post.seoDescription ?? undefined,
+    body: post.content,
+    content: post.content,
+    readingTime: readingTime(post.content).text,
+    headings,
+    authorProfile: {
+      slug: post.author?.clerkId ?? "unknown",
+      name: post.author?.name ?? "Unknown Author",
+      role: post.author?.role ?? "Contributor",
+      bio: post.author?.bio ?? "",
+      avatarLabel: post.author?.name ? post.author.name.substring(0, 2).toUpperCase() : "U",
+      location: "",
+    },
+    categoryProfile: {
+      slug: post.category?.slug ?? "",
+      label: post.category?.label ?? "Uncategorized",
+      description: post.category?.description ?? "",
+      seo: {
+        title: post.category?.seoTitle ?? `${post.category?.label} | ToolHive Blog`,
+        description: post.category?.seoDescription ?? "",
+        canonical: post.category?.seoCanonical ?? `/blog/categories/${post.category?.slug}`,
+      },
+    },
+    tagsProfile: post.tags.map((tag: string) => ({ slug: slugify(tag), label: tag })),
+    relatedSlugs: [],
+    publishedAt: post.createdAt,
+    updatedAt: post.updatedAt,
+    canonical: `/blog/${post.slug}`,
+  };
 }
 
-function readPost(slug: string): BlogPost {
-  const filePath = path.join(blogRoot, `${slug}.mdx`);
-  const source = fs.readFileSync(filePath, "utf8");
-  const { content, data } = matter(source);
-  const frontmatter = normalizeFrontmatter(data);
-  const publishedAt = new Date(frontmatter.date);
-  const updatedAt = publishedAt;
-  const categoryProfile = getCategoryProfile(frontmatter.category);
-  const authorProfile = getAuthorProfile(frontmatter.author);
-  const tagsProfile = frontmatter.tags.map((tag) => ({ slug: slugify(tag), label: tag }));
-  const headings = extractHeadings(content);
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    include: {
+      category: true,
+      author: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return posts.map(mapPrismaPostToBlogPost);
+}
 
-  return {
-    ...frontmatter,
-    slug,
-    body: content,
-    content,
-    readingTime: readingTime(content).text,
-    headings,
-    authorProfile,
-    categoryProfile,
-    tagsProfile,
-    publishedAt,
-    updatedAt,
-    canonical: `/blog/${slug}`,
-    relatedSlugs: [],
-  };
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+  const post = await prisma.blogPost.findFirst({
+    where: { slug },
+    include: {
+      category: true,
+      author: true,
+    },
+  });
+  if (!post || !post.published) return undefined;
+  return mapPrismaPostToBlogPost(post);
+}
+
+export async function getBlogFeaturedPosts(limit = 3): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true, featured: true } as Prisma.BlogPostWhereInput,
+    include: { category: true, author: true },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+  return posts.map(mapPrismaPostToBlogPost);
+}
+
+export async function getBlogRecentPosts(limit = 6): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    include: { category: true, author: true },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+  return posts.map(mapPrismaPostToBlogPost);
+}
+
+export async function getBlogCategories(): Promise<BlogCategory[]> {
+  const categories = await prisma.category.findMany({
+    where: { blogPosts: { some: {} } },
+    include: { _count: { select: { blogPosts: true } } },
+  });
+  
+  type PrismaCategoryWithCount = Prisma.CategoryGetPayload<{
+    include: { _count: { select: { blogPosts: true } } }
+  }>;
+
+  return categories.map((category: PrismaCategoryWithCount) => ({
+    slug: category.slug,
+    label: category.label,
+    description: category.description,
+    seo: {
+      title: category.seoTitle ?? `${category.label} | ToolHive Blog`,
+      description: category.seoDescription ?? "",
+      canonical: category.seoCanonical ?? `/blog/categories/${category.slug}`,
+    },
+    count: category._count.blogPosts,
+  }));
+}
+
+export async function getBlogTags(): Promise<BlogTag[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    select: { tags: true },
+  });
+  
+  const tagMap = new Map<string, BlogTag>();
+
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      const slug = slugify(tag);
+      const existing = tagMap.get(slug);
+      tagMap.set(slug, { slug, label: existing?.label ?? tag, count: (existing?.count ?? 0) + 1 });
+    }
+  }
+
+  return [...tagMap.values()].sort((left, right) => right.count - left.count || left.label.localeCompare(right.label));
+}
+
+export async function getBlogAuthors(): Promise<BlogAuthor[]> {
+  const authors = await prisma.user.findMany({
+    where: { blogPosts: { some: {} } },
+    include: { _count: { select: { blogPosts: true } } },
+  });
+
+  type PrismaUserWithCount = Prisma.UserGetPayload<{
+    include: { _count: { select: { blogPosts: true } } }
+  }>;
+
+  return authors.map((author: PrismaUserWithCount) => ({
+    slug: author.clerkId ?? "unknown",
+    name: author.name ?? "Unknown Author",
+    role: author.role ?? "Contributor",
+    bio: author.bio ?? "",
+    avatarLabel: author.name ? author.name.substring(0, 2).toUpperCase() : "U",
+    location: "",
+    website: undefined,
+    social: [] as readonly { label: string; href: string }[],
+    count: author._count.blogPosts,
+  }));
+}
+
+export async function getBlogPostsByCategory(slug: string): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true, category: { slug } },
+    include: { category: true, author: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return posts.map(mapPrismaPostToBlogPost);
+}
+
+export async function getBlogPostsByTag(slug: string): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    include: { category: true, author: true },
+    orderBy: { createdAt: "desc" },
+  });
+  // Prisma doesn't support easy array-contains matching for non-exact strings, filter in memory
+  const filtered = posts.filter((post: PrismaBlogPostWithRelations) => post.tags.some((tag: string) => slugify(tag) === slug));
+  return filtered.map(mapPrismaPostToBlogPost);
+}
+
+export async function getBlogPostsByAuthor(slug: string): Promise<BlogPost[]> {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true, author: { clerkId: slug } },
+    include: { category: true, author: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return posts.map(mapPrismaPostToBlogPost);
 }
 
 function scoreRelatedPost(post: BlogPost, candidate: BlogPost) {
@@ -227,55 +260,9 @@ function scoreRelatedPost(post: BlogPost, candidate: BlogPost) {
   return score;
 }
 
-export const getBlogPosts = cache(() => {
-  return loadPostSlugs()
-    .map((slug) => readPost(slug))
-    .filter((post) => post.published)
-    .sort((left, right) => right.publishedAt.getTime() - left.publishedAt.getTime());
-});
-
-export const getBlogPostBySlug = cache((slug: string) => getBlogPosts().find((post) => post.slug === slug));
-
-export const getBlogFeaturedPosts = cache((limit = 3) => getBlogPosts().filter((post) => post.featured).slice(0, limit));
-
-export const getBlogRecentPosts = cache((limit = 6) => getBlogPosts().slice(0, limit));
-
-export const getBlogCategories = cache(() =>
-  blogCategories.map((category) => ({
-    ...category,
-    count: getBlogPosts().filter((post) => post.category === category.slug).length,
-  }))
-);
-
-export const getBlogTags = cache(() => {
-  const tagMap = new Map<string, BlogTag>();
-
-  for (const post of getBlogPosts()) {
-    for (const tag of post.tags) {
-      const slug = slugify(tag);
-      const existing = tagMap.get(slug);
-      tagMap.set(slug, { slug, label: existing?.label ?? tag, count: (existing?.count ?? 0) + 1 });
-    }
-  }
-
-  return [...tagMap.values()].sort((left, right) => right.count - left.count || left.label.localeCompare(right.label));
-});
-
-export const getBlogAuthors = cache(() =>
-  blogAuthors.map((author) => ({
-    ...author,
-    count: getBlogPosts().filter((post) => post.author === author.slug).length,
-  }))
-);
-
-export const getBlogPostsByCategory = cache((slug: BlogCategorySlug) => getBlogPosts().filter((post) => post.category === slug));
-
-export const getBlogPostsByTag = cache((slug: string) => getBlogPosts().filter((post) => post.tags.some((tag) => slugify(tag) === slug)));
-
-export const getBlogPostsByAuthor = cache((slug: BlogAuthorSlug) => getBlogPosts().filter((post) => post.author === slug));
-
-export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
-  return getBlogPosts()
+export async function getRelatedBlogPosts(post: BlogPost, limit = 3): Promise<BlogPost[]> {
+  const allPosts = await getBlogPosts();
+  return allPosts
     .filter((candidate) => candidate.slug !== post.slug)
     .map((candidate) => ({ candidate, score: scoreRelatedPost(post, candidate) }))
     .sort((left, right) => right.score - left.score || right.candidate.publishedAt.getTime() - left.candidate.publishedAt.getTime())
@@ -283,16 +270,19 @@ export function getRelatedBlogPosts(post: BlogPost, limit = 3) {
     .map(({ candidate }) => candidate);
 }
 
-export function getBlogCategoryBySlug(slug: string) {
-  return blogCategories.find((category) => category.slug === slug);
+export async function getBlogCategoryBySlug(slug: string) {
+  const categories = await getBlogCategories();
+  return categories.find((category) => category.slug === slug);
 }
 
-export function getBlogTagBySlug(slug: string) {
-  return getBlogTags().find((tag) => tag.slug === slug);
+export async function getBlogTagBySlug(slug: string) {
+  const tags = await getBlogTags();
+  return tags.find((tag) => tag.slug === slug);
 }
 
-export function getBlogAuthorBySlug(slug: string) {
-  return blogAuthors.find((author) => author.slug === slug);
+export async function getBlogAuthorBySlug(slug: string) {
+  const authors = await getBlogAuthors();
+  return authors.find((author) => author.slug === slug);
 }
 
 export function buildBlogBreadcrumbs(items: readonly { label: string; href: string }[]) {
@@ -334,27 +324,31 @@ export function buildBlogAuthorBreadcrumbs(author: BlogAuthor) {
   ] as const;
 }
 
-export function getBlogStaticPaths() {
-  return getBlogPosts().map((post) => ({ slug: post.slug }));
+export async function getBlogStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export function getBlogCategoryStaticPaths() {
-  return blogCategories.map((category) => ({ slug: category.slug }));
+export async function getBlogCategoryStaticPaths() {
+  const categories = await getBlogCategories();
+  return categories.map((category) => ({ slug: category.slug }));
 }
 
-export function getBlogTagStaticPaths() {
-  return getBlogTags().map((tag) => ({ slug: tag.slug }));
+export async function getBlogTagStaticPaths() {
+  const tags = await getBlogTags();
+  return tags.map((tag) => ({ slug: tag.slug }));
 }
 
-export function getBlogAuthorStaticPaths() {
-  return blogAuthors.map((author) => ({ slug: author.slug }));
+export async function getBlogAuthorStaticPaths() {
+  const authors = await getBlogAuthors();
+  return authors.map((author) => ({ slug: author.slug }));
 }
 
-export function getBlogSitemapEntries() {
-  const posts = getBlogPosts();
-  const categories = getBlogCategories();
-  const tags = getBlogTags();
-  const authors = getBlogAuthors();
+export async function getBlogSitemapEntries() {
+  const posts = await getBlogPosts();
+  const categories = await getBlogCategories();
+  const tags = await getBlogTags();
+  const authors = await getBlogAuthors();
 
   return [
     createSitemapEntry("/blog", posts[0]?.updatedAt ?? new Date(), "daily", 0.9),
@@ -366,4 +360,24 @@ export function getBlogSitemapEntries() {
     ...tags.map((tag) => createSitemapEntry(`/blog/tags/${tag.slug}`, new Date(), "weekly", 0.55)),
     ...authors.map((author) => createSitemapEntry(`/blog/authors/${author.slug}`, new Date(), "weekly", 0.55)),
   ];
+}
+
+export async function getBlogPostsRelatedToTags(tags: string[], limit = 3) {
+  const normalizedTags = tags.map((t) => t.toLowerCase());
+  
+  const allPosts = await getBlogPosts();
+  const scoredPosts = allPosts.map((candidate) => {
+    const candidateTags = candidate.tags.map((t) => t.toLowerCase());
+    const sharedTags = candidateTags.filter((tag) => normalizedTags.some(t => t.includes(tag) || tag.includes(t)));
+    let score = sharedTags.length * 3;
+    if (candidate.featured) {
+      score += 1;
+    }
+    return { candidate, score };
+  });
+
+  return scoredPosts
+    .sort((left, right) => right.score - left.score || right.candidate.publishedAt.getTime() - left.candidate.publishedAt.getTime())
+    .slice(0, limit)
+    .map(({ candidate }) => candidate);
 }

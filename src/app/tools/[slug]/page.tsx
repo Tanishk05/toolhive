@@ -7,17 +7,19 @@ import { ToolAnalytics } from "@/components/analytics/tool-analytics";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
-import { buildToolBreadcrumbs, getToolBySlug, toolRegistry } from "@/features/tools/tool-registry";
+import { buildToolBreadcrumbs, getToolBySlug, getToolRegistry, getIconComponent } from "@/features/tools/tool-registry";
 import { ToolRecommendations } from "@/features/tools/components/tool-recommendations";
+import { BlogRecommendations } from "@/components/blog/blog-recommendations";
 import { AdUnit } from "@/components/ads/ad-unit";
 import { createBreadcrumbStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return toolRegistry.map((tool) => ({ slug: tool.slug }));
+export async function generateStaticParams() {
+  const registry = await getToolRegistry();
+  return registry.map((tool) => ({ slug: tool.slug }));
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
-  const tool = getToolBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
+  const tool = await getToolBySlug(params.slug);
 
   if (!tool) {
     return {};
@@ -31,14 +33,14 @@ export function generateMetadata({ params }: Readonly<{ params: { slug: string }
   });
 }
 
-export default function ToolDetailsPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const tool = getToolBySlug(params.slug);
+export default async function ToolDetailsPage({ params }: Readonly<{ params: { slug: string } }>) {
+  const tool = await getToolBySlug(params.slug);
 
   if (!tool) {
     notFound();
   }
 
-  const Icon = tool.icon;
+  const Icon = getIconComponent(tool.icon);
   const breadcrumbs = buildToolBreadcrumbs(tool);
   const softwareApplication = createSoftwareApplicationStructuredData(tool);
 
@@ -97,6 +99,7 @@ export default function ToolDetailsPage({ params }: Readonly<{ params: { slug: s
         </Card>
       </section>
       <AdUnit format="horizontal" slotId="tool-page-bottom" />
+      <BlogRecommendations tags={[...tool.tags, ...tool.searchTerms, tool.name]} />
       <ToolRecommendations currentToolSlug={tool.slug} />
     </main>
   );

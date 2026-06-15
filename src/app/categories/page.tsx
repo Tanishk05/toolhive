@@ -4,7 +4,7 @@ import { CategoryCard } from "@/components/marketing/category-card";
 import { Card } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search";
 import { JsonLd } from "@/components/seo/json-ld";
-import { searchCategories, toolCategories } from "@/features/tools/tool-registry";
+import { searchCategories, getToolCategories } from "@/features/tools/tool-registry";
 import { createBreadcrumbStructuredData, createItemListStructuredData, createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -14,13 +14,14 @@ export const metadata: Metadata = createMetadata({
   keywords: ["categories", "tools", "ToolHive"],
 });
 
-export default function CategoriesPage({
+export default async function CategoriesPage({
   searchParams,
 }: Readonly<{
   searchParams?: Record<string, string | string[] | undefined>;
 }>) {
   const query = typeof searchParams?.q === "string" ? searchParams.q : "";
-  const categories = searchCategories(query);
+  const categories = await searchCategories(query);
+  const toolCategoriesList = await getToolCategories();
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
@@ -50,7 +51,7 @@ export default function CategoriesPage({
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {toolCategories.map((category) => (
+        {toolCategoriesList.map((category) => (
           <Card key={category.slug} className="p-6">
             <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Registry</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">{category.label}</h2>

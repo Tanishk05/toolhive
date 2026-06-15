@@ -1,147 +1,183 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, FolderTree, Tag, Users } from "lucide-react";
-import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
-import { Card } from "@/components/ui/card";
+import { ArrowRight, FileText } from "lucide-react";
 import { JsonLd } from "@/components/seo/json-ld";
-import { BlogAuthorCard, BlogPostCard } from "@/components/blog/blog-ui";
+import { BlogPostCard, FeaturedBlogPostCard } from "@/components/blog/blog-ui";
+import { SearchBar } from "@/components/ui/search";
+import { ToolCard } from "@/components/marketing/tool-card";
+import { NewsletterForm } from "@/components/contact/newsletter-form";
+import { getFeaturedTools } from "@/features/tools/tool-registry";
 import {
   buildBlogBreadcrumbs,
-  getBlogAuthors,
   getBlogCategories,
   getBlogFeaturedPosts,
+  getBlogRecentPosts,
   getBlogPosts,
-  getBlogTags,
 } from "@/features/blog/blog-registry";
-import { createBreadcrumbStructuredData, createItemListStructuredData, createMetadata } from "@/lib/seo";
+import { createBreadcrumbStructuredData, createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
-  title: "Blog | ToolHive",
-  description: "Static MDX-powered articles about architecture, SEO, strategy, and content systems.",
+  title: "Blog & Resources | ToolHive",
+  description: "Learn how to use online tools more effectively with practical guides, tutorials, productivity tips, and technical resources.",
   path: "/blog",
-  keywords: ["blog", "MDX", "SEO", "architecture", "ToolHive"],
+  keywords: ["tutorials", "guides", "productivity", "developer tools", "ToolHive blog", "SEO tools"],
 });
 
-export default function BlogPage() {
-  const featuredPosts = getBlogFeaturedPosts(3);
-  const latestPosts = getBlogPosts();
-  const categories = getBlogCategories();
-  const tags = getBlogTags();
-  const authors = getBlogAuthors();
+function createBlogStructuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "ToolHive Blog & Resources",
+    description: "Guides, tutorials, and productivity resources for using online utilities.",
+    url: "https://toolhive.in/blog",
+  };
+}
+
+export default async function BlogPage() {
+  const featuredPosts = await getBlogFeaturedPosts(1);
+  const mainFeaturedPost = featuredPosts[0];
+  const latestPosts = (await getBlogRecentPosts(6)).filter((p) => p.slug !== mainFeaturedPost?.slug);
+  const popularPosts = (await getBlogPosts()).slice(0, 4);
+  const categories = await getBlogCategories();
   const breadcrumbs = buildBlogBreadcrumbs([{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }]);
+  const tools = (await getFeaturedTools()).slice(0, 4);
+
+  const popularTopics = ["QR Codes", "SEO", "Image Optimization", "Productivity", "Finance", "Developer Tools"];
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-16 px-4 py-8 sm:px-6 lg:px-8">
       <JsonLd data={createBreadcrumbStructuredData(breadcrumbs)} />
-      <JsonLd data={createItemListStructuredData(featuredPosts.map((post, index) => ({ name: post.title, href: post.canonical, position: index + 1 })))} />
+      <JsonLd data={createBlogStructuredData()} />
 
-      <Breadcrumbs items={breadcrumbs} />
-
-      <section className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-        <div className="space-y-4">
-          <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">ToolHive Blog</p>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">An MDX blog system built for static generation and long-term scale.</h1>
-          <p className="max-w-3xl text-base leading-7 text-slate-400">
-            Posts, authors, tags, and category archives all come from the same filesystem-backed registry, so content stays easy to extend without making the app harder to reason about.
+      {/* 1. Blog Hero */}
+      <section className="mt-4 flex flex-col items-center space-y-8 text-center">
+        <div className="max-w-3xl space-y-4">
+          <p className="text-xs font-medium uppercase tracking-[0.28em] text-emerald-400">ToolHive Resources</p>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">Guides, Tutorials, and Resources</h1>
+          <p className="text-lg leading-8 text-muted-foreground">
+            Learn how to use online tools more effectively with practical guides, tutorials, productivity tips, and technical resources.
           </p>
         </div>
 
-        <Card className="grid grid-cols-2 gap-4 p-6 text-sm text-slate-300">
-          <Metric icon={BookOpen} label="Posts" value={String(latestPosts.length)} />
-          <Metric icon={FolderTree} label="Categories" value={String(categories.length)} />
-          <Metric icon={Tag} label="Tags" value={String(tags.length)} />
-          <Metric icon={Users} label="Authors" value={String(authors.length)} />
-        </Card>
+        <div className="mx-auto w-full max-w-2xl">
+          <SearchBar action="/blog" placeholder="Search for tutorials, guides, and tips..." />
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-sm">
+          <span className="text-slate-500">Popular Topics:</span>
+          {popularTopics.map((topic) => (
+            <Link
+              key={topic}
+              href={`/blog/categories`}
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-muted-foreground transition hover:bg-emerald-500/10 hover:text-emerald-300"
+            >
+              {topic}
+            </Link>
+          ))}
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Featured</p>
-            <h2 className="mt-2 text-2xl font-semibold text-white">Posts worth surfacing first</h2>
-          </div>
-          <Link className="inline-flex items-center gap-2 text-sm text-emerald-300 transition hover:text-emerald-200" href="/blog/categories">
-            Browse categories
-            <ArrowRight className="h-4 w-4" />
+      {/* 2. Featured Article */}
+      {mainFeaturedPost && (
+        <section className="scroll-mt-28" id="featured">
+          <FeaturedBlogPostCard post={mainFeaturedPost} />
+        </section>
+      )}
+
+      {/* 3. Browse By Category */}
+      <section className="space-y-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Browse By Category</h2>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {categories.map((category) => (
+            <Link
+              key={category.slug}
+              href={`/blog/categories/${category.slug}`}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/50 p-6 transition hover:border-emerald-500/30 hover:bg-slate-900"
+            >
+              <div className="absolute right-0 top-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-emerald-500/5 blur-2xl transition group-hover:bg-emerald-500/10" />
+              <FileText className="mb-4 h-6 w-6 text-emerald-400" />
+              <h3 className="text-lg font-semibold text-foreground transition-colors group-hover:text-emerald-300">{category.label}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{category.count} Articles</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Latest Articles */}
+      <section className="space-y-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Latest Articles</h2>
+          <Link
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+            href="/blog/categories"
+          >
+            View all <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {featuredPosts.map((post) => (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {latestPosts.map((post) => (
             <BlogPostCard key={post.slug} post={post} />
           ))}
         </div>
       </section>
 
-      <section className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="space-y-4">
-          <div>
-            <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Latest Posts</p>
-            <h2 className="mt-2 text-2xl font-semibold text-white">Everything published in the registry</h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {latestPosts.map((post) => (
-              <BlogPostCard key={post.slug} post={post} />
-            ))}
-          </div>
+      {/* 5. Popular Articles */}
+      <section className="space-y-8 rounded-[2.5rem] border border-white/5 bg-slate-900/50 p-8 sm:p-12">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Most Viewed Tutorials</h2>
+          <p className="text-sm text-muted-foreground">Discover what other ToolHive users are reading right now.</p>
         </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {popularPosts.map((post) => (
+            <Link key={post.slug} href={post.canonical} className="group block space-y-3">
+              <div className="text-xs font-medium text-emerald-400">{post.categoryProfile.label}</div>
+              <h3 className="line-clamp-2 text-lg font-semibold text-foreground transition-colors group-hover:text-emerald-300">{post.title}</h3>
+              <div className="text-xs text-slate-500">{post.readingTime}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-        <div className="space-y-4">
-          <Card className="p-6">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Authors</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">Editorial profiles</h2>
-              </div>
-              <Link className="text-sm text-emerald-300 transition hover:text-emerald-200" href="/blog/authors">
-                View all
-              </Link>
-            </div>
-            <div className="mt-5 space-y-4">
-              {authors.slice(0, 2).map((author) => (
-                <BlogAuthorCard key={author.slug} author={author} />
-              ))}
-            </div>
-          </Card>
+      {/* 6. Tool Related Content */}
+      <section className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Learn More About Our Tools</h2>
+            <p className="text-sm text-muted-foreground">Put your knowledge into practice with our free utilities.</p>
+          </div>
+          <Link
+            className="hidden items-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300 sm:inline-flex"
+            href="/tools"
+          >
+            Explore all tools <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {tools.map((tool) => (
+            <ToolCard key={tool.slug} slug={tool.slug} name={tool.name} description={tool.description} tags={tool.tags} accent={tool.accent} />
+          ))}
+        </div>
+      </section>
 
-          <Card className="p-6">
-            <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Tags</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {tags.slice(0, 12).map((tag) => (
-                <Link key={tag.slug} href={`/blog/tags/${tag.slug}`} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300 transition hover:text-white">
-                  {tag.label}
-                </Link>
-              ))}
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Categories</p>
-            <div className="mt-4 space-y-3">
-              {categories.map((category) => (
-                <Link key={category.slug} href={`/blog/categories/${category.slug}`} className="block rounded-2xl border border-white/10 bg-slate-950/50 p-4 transition hover:border-emerald-400/30 hover:bg-slate-950">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="font-medium text-white">{category.label}</p>
-                      <p className="mt-1 text-sm text-slate-400">{category.description}</p>
-                    </div>
-                    <span className="text-sm text-emerald-300">{category.count}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </Card>
+      {/* 7. Newsletter */}
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-card p-8 py-16 text-center shadow-sm dark:bg-[linear-gradient(135deg,rgba(16,185,129,0.1),rgba(15,23,42,0.8),rgba(59,130,246,0.1))] sm:p-16">
+        <div className="relative mx-auto max-w-2xl space-y-8">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20">
+            <FileText className="h-8 w-8 text-emerald-400" />
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Get New Tool Guides</h2>
+            <p className="text-lg text-muted-foreground">
+              Subscribe to our newsletter for the latest tutorials, productivity tips, and feature updates. No spam, just value.
+            </p>
+          </div>
+          <div className="mx-auto max-w-md">
+            <NewsletterForm />
+          </div>
         </div>
       </section>
     </main>
-  );
-}
-
-function Metric({ icon: Icon, label, value }: Readonly<{ icon: React.ComponentType<{ className?: string }>; label: string; value: string }>) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-4">
-      <Icon className="h-4 w-4 text-emerald-300" />
-      <p className="mt-4 text-2xl font-semibold text-white">{value}</p>
-      <p className="mt-1 text-xs uppercase tracking-[0.24em] text-slate-500">{label}</p>
-    </div>
   );
 }

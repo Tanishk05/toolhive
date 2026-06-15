@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { GstCalculatorLayout } from "@/features/gst-calculator/components/gst-calculator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("gst-calculator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("gst-calculator");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function GstCalculatorPage() {
-  const tool = getToolBySlug("gst-calculator");
+export default async function GstCalculatorPage() {
+  const tool = await getToolBySlug("gst-calculator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

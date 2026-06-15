@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { Base64Layout } from "@/features/base64/components/base64-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("base64-encoder-decoder");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("base64-encoder-decoder");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function Base64Page() {
-  const tool = getToolBySlug("base64-encoder-decoder");
+export default async function Base64EncoderDecoderPage() {
+  const tool = await getToolBySlug("base64-encoder-decoder");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

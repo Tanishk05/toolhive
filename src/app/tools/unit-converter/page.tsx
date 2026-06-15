@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { UnitConverterLayout } from "@/features/unit-converter/components/unit-converter-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("unit-converter");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("unit-converter");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function UnitConverterPage() {
-  const tool = getToolBySlug("unit-converter");
+export default async function UnitConverterPage() {
+  const tool = await getToolBySlug("unit-converter");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

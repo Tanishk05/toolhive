@@ -1,6 +1,7 @@
 import type { User } from "@clerk/nextjs/server";
-import { toolRegistry } from "@/features/tools/tool-registry";
+import { getToolRegistry, type ToolRegistryEntry } from "@/features/tools/tool-registry";
 import { freeSubscription, type SubscriptionSummary } from "@/lib/auth/subscription";
+import type { SavedTool } from "@prisma/client";
 import { logger } from "@/lib/logger";
 
 export type AccountUser = {
@@ -83,16 +84,18 @@ export const accountService = {
         where: { userId },
         orderBy: { createdAt: "desc" },
       });
-      const savedSlugs = new Set(savedTools.map((tool) => tool.toolSlug));
+      const savedToolSlugs = new Set(savedTools.map((st: SavedTool) => st.toolSlug));
+      const tools = await getToolRegistry();
 
-      return toolRegistry
-        .filter((tool) => savedSlugs.has(tool.slug))
-        .map((tool) => ({
+      return tools
+        .filter((tool: ToolRegistryEntry) => savedToolSlugs.has(tool.slug))
+        .map((tool: ToolRegistryEntry) => ({
           slug: tool.slug,
           name: tool.name,
           categoryLabel: tool.categoryLabel,
           summary: tool.summary,
           premium: tool.premium,
+          savedAt: savedTools.find((st: SavedTool) => st.toolSlug === tool.slug)?.createdAt || new Date(),
         }));
     } catch (error) {
       logger.error("Failed to load saved tools", { error });

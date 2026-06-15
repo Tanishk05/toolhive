@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LandingPage } from "@/components/landing/landing-page";
+import { getLandingContent } from "@/constants/landing-content";
 import { JsonLd } from "@/components/seo/json-ld";
 import { seoFaqItems } from "@/constants/seo-content";
 import {
@@ -17,8 +18,8 @@ export const metadata: Metadata = createMetadata({
   keywords: ["ToolHive", "free online tools", "utilities", "developer tools", "generators"],
 });
 
-export default function Home() {
-  const featuredTools = getFeaturedTools().slice(0, 6);
+export default async function Home() {
+  const featuredTools = (await getFeaturedTools()).slice(0, 6);
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function Home() {
           featuredTools.map((tool, index) => ({ name: tool.name, href: `/tools/${tool.slug}`, position: index + 1 }))
         )}
       />
-      <LandingPage />
+      <LandingPage content={await getLandingContent()} />
     </>
   );
 }

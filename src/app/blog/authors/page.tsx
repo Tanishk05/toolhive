@@ -12,8 +12,8 @@ export const metadata: Metadata = createMetadata({
   keywords: ["blog authors", "ToolHive", "editorial"],
 });
 
-export default function BlogAuthorsPage() {
-  const authors = getBlogAuthors();
+export default async function BlogAuthorsPage() {
+  const authors = await getBlogAuthors();
   const breadcrumbs = buildBlogBreadcrumbs([{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Authors", href: "/blog/authors" }]);
 
   return (

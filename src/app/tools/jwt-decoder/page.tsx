@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { JwtDecoderLayout } from "@/features/jwt-decoder/components/jwt-decoder-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("jwt-decoder");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("jwt-decoder");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function JwtDecoderPage() {
-  const tool = getToolBySlug("jwt-decoder");
+export default async function JwtDecoderPage() {
+  const tool = await getToolBySlug("jwt-decoder");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

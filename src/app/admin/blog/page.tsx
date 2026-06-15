@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { PenSquare } from "lucide-react";
+import { DeleteButton } from "./components/delete-button";
 
 export const dynamic = "force-dynamic";
 
@@ -19,10 +20,10 @@ export default async function AdminBlogPage() {
           <h1 className="text-3xl font-bold text-white tracking-tight">Blog Management</h1>
           <p className="text-slate-400 mt-2">Manage articles, authors, and publishing status.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]">
+        <Link href="/admin/blog/new" className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]">
           <PenSquare className="h-4 w-4" />
           New Post
-        </button>
+        </Link>
       </div>
 
       <Card className="overflow-hidden">
@@ -54,9 +55,12 @@ export default async function AdminBlogPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link href={`/admin/blog/${post.id}/edit`} className="text-emerald-400 hover:text-emerald-300 text-sm font-medium">
-                      Edit
-                    </Link>
+                    <div className="flex justify-end gap-4 items-center">
+                      <Link href={`/admin/blog/${post.id}/edit`} className="text-emerald-400 hover:text-emerald-300 text-sm font-medium">
+                        Edit
+                      </Link>
+                      <DeleteButton id={post.id} />
+                    </div>
                   </td>
                 </tr>
               ))}

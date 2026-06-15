@@ -3,7 +3,7 @@ import { getBlogPosts } from "@/features/blog/blog-registry";
 import { siteConfig } from "@/constants/site-config";
 
 export async function GET() {
-  const posts = getBlogPosts();
+  const posts = await getBlogPosts();
   const items = posts
     .map(
       (post) => `

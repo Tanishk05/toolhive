@@ -11,8 +11,8 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { PasswordGeneratorLayout } from "@/features/password-generator/components/password-generator-layout";
 
-export function generateMetadata(): Metadata {
-  const tool = getToolBySlug("password-generator");
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getToolBySlug("password-generator");
   if (!tool) return {};
 
   return createMetadata({
@@ -42,8 +42,8 @@ const faqs = [
   },
 ];
 
-export default function PasswordGeneratorPage() {
-  const tool = getToolBySlug("password-generator");
+export default async function PasswordGeneratorPage() {
+  const tool = await getToolBySlug("password-generator");
   if (!tool) return null;
 
   const breadcrumbs = buildToolBreadcrumbs(tool);

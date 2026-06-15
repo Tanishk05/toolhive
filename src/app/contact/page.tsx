@@ -36,8 +36,8 @@ export default function ContactPage() {
                   <MessageSquare className="h-5 w-5 text-emerald-300" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Send a message</h2>
-                  <p className="text-sm text-slate-400">General inquiries, feedback, and partnerships</p>
+                  <h2 className="text-lg font-semibold text-foreground">Send a message</h2>
+                  <p className="text-sm text-muted-foreground">General inquiries, feedback, and partnerships</p>
                 </div>
               </div>
               <ContactForm />
@@ -57,11 +57,11 @@ export default function ContactPage() {
                     <Newspaper className="h-5 w-5 text-blue-300" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-white">Newsletter</h2>
-                    <p className="text-sm text-slate-400">Updates on tools, features, and content</p>
+                    <h2 className="text-lg font-semibold text-foreground">Newsletter</h2>
+                    <p className="text-sm text-muted-foreground">Updates on tools, features, and content</p>
                   </div>
                 </div>
-                <p className="text-sm leading-7 text-slate-300">
+                <p className="text-sm leading-7 text-muted-foreground">
                   Stay in the loop with curated updates about new tools, platform features, and articles from the ToolHive team. No spam — just the good stuff.
                 </p>
                 <NewsletterForm />
@@ -79,11 +79,11 @@ export default function ContactPage() {
                     <LifeBuoy className="h-5 w-5 text-amber-300" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-white">Support</h2>
-                    <p className="text-sm text-slate-400">Bug reports, features, and billing</p>
+                    <h2 className="text-lg font-semibold text-foreground">Support</h2>
+                    <p className="text-sm text-muted-foreground">Bug reports, features, and billing</p>
                   </div>
                 </div>
-                <div className="space-y-4 text-sm text-slate-300">
+                <div className="space-y-4 text-sm text-muted-foreground">
                   <p>Need help with something specific? Use the form below to submit a detailed support request.</p>
                   <div className="grid gap-3 text-xs">
                     {[
@@ -92,8 +92,8 @@ export default function ContactPage() {
                       { label: "Priority support", value: "Available for Pro & Team" },
                     ].map((item) => (
                       <div key={item.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <span className="text-slate-400">{item.label}</span>
-                        <span className="font-medium text-white">{item.value}</span>
+                        <span className="text-muted-foreground">{item.label}</span>
+                        <span className="font-medium text-foreground">{item.value}</span>
                       </div>
                     ))}
                   </div>
@@ -113,8 +113,8 @@ export default function ContactPage() {
                   <LifeBuoy className="h-5 w-5 text-amber-300" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Submit a support request</h2>
-                  <p className="text-sm text-slate-400">Report bugs, request features, or get billing help</p>
+                  <h2 className="text-lg font-semibold text-foreground">Submit a support request</h2>
+                  <p className="text-sm text-muted-foreground">Report bugs, request features, or get billing help</p>
                 </div>
               </div>
               <SupportForm />
