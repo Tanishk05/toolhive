@@ -16,10 +16,10 @@ export function LandingShell({ children }: Readonly<{ children: React.ReactNode 
             </div>
           </Link>
           <nav aria-label="Primary" className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <a className="transition hover:text-foreground" href="#featured-tools">Tools</a>
-            <a className="transition hover:text-foreground" href="#popular-categories">Categories</a>
-            <a className="transition hover:text-foreground" href="#blog-preview">Blog</a>
-            <a className="transition hover:text-foreground" href="#cta">Contact</a>
+            <Link className="transition hover:text-foreground" href="/tools">Tools</Link>
+            <Link className="transition hover:text-foreground" href="/#categories">Categories</Link>
+            <Link className="transition hover:text-foreground" href="/blog">Blog</Link>
+            <Link className="transition hover:text-foreground" href="/contact">Contact</Link>
             <Button asChild size="sm" className="ml-1">
               <a href="#featured-tools">Get started</a>
             </Button>

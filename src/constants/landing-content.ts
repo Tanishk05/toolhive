@@ -97,13 +97,17 @@ export const landingContent = {
   footerLinks: {
     product: [
       { label: "Tools", href: "/tools" },
-      { label: "Categories", href: "/categories" },
+      { label: "Categories", href: "/#categories" },
       { label: "Blog", href: "/blog" },
-      { label: "Contact", href: "/contact" },
+    ],
+    company: [
+      { label: "About Us", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
     ],
     legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms of Service", href: "/terms-of-service" },
+      { label: "Disclaimer", href: "/disclaimer" },
     ],
   },
 } as const;
