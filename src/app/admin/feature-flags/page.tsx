@@ -29,7 +29,7 @@ export default async function AdminFeatureFlagsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {flags.map((flag) => (
+              {flags.map((flag: any) => (
                 <tr key={flag.id} className="hover:bg-white/[0.02] transition-colors">
                   <td className="px-6 py-4">
                     <div className="font-medium text-white">{flag.name}</div>

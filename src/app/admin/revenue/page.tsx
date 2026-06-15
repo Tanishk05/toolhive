@@ -40,7 +40,7 @@ export default async function AdminRevenuePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {payments.map((payment) => (
+                {payments.map((payment: any) => (
                   <tr key={payment.id} className="hover:bg-white/[0.02]">
                     <td className="px-6 py-4">
                       {payment.user?.email || "Unknown"}
@@ -81,7 +81,7 @@ export default async function AdminRevenuePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {subscriptions.map((sub) => (
+                {subscriptions.map((sub: any) => (
                   <tr key={sub.id} className="hover:bg-white/[0.02]">
                     <td className="px-6 py-4">
                       {sub.user?.email || "Unknown"}

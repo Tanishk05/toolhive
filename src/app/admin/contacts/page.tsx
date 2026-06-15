@@ -17,7 +17,7 @@ export default async function AdminContactsPage() {
       </div>
 
       <div className="grid gap-6">
-        {messages.map((msg) => (
+        {messages.map((msg: any) => (
           <Card key={msg.id} className="p-6">
             <div className="flex justify-between items-start mb-4">
               <div>

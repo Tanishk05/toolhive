@@ -30,7 +30,7 @@ export default async function AdminToolsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {tools.map((tool) => (
+              {tools.map((tool: any) => (
                 <tr key={tool.id} className="hover:bg-white/[0.02] transition-colors">
                   <td className="px-6 py-4">
                     <div className="font-medium text-white">{tool.name}</div>
