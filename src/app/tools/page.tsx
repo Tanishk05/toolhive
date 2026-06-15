@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ToolCard } from "@/components/marketing/tool-card";
@@ -21,11 +22,12 @@ type ToolSortOption = "popular" | "recent" | "alphabetical";
 export async function generateMetadata({
   searchParams,
 }: Readonly<{
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }>): Promise<Metadata> {
-  const query = typeof searchParams?.q === "string" ? searchParams.q : "";
-  const category = typeof searchParams?.category === "string" ? searchParams.category : undefined;
-  const sort = parseSort(typeof searchParams?.sort === "string" ? searchParams.sort : undefined);
+  const resolvedSearchParams = await searchParams;
+  const query = typeof resolvedSearchParams?.q === "string" ? resolvedSearchParams.q : "";
+  const category = typeof resolvedSearchParams?.category === "string" ? resolvedSearchParams.category : undefined;
+  const sort = parseSort(typeof resolvedSearchParams?.sort === "string" ? resolvedSearchParams.sort : undefined);
 
   const categoryLabel = category ? (await getCategoryBySlug(category))?.label : undefined;
   const titleParts = [categoryLabel ?? "Tools", sort === "recent" ? "Recently Added" : sort === "alphabetical" ? "Alphabetical" : "Popular"];
@@ -47,13 +49,14 @@ export async function generateMetadata({
 export default async function ToolsPage({
   searchParams,
 }: Readonly<{
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }>) {
-  const query = typeof searchParams?.q === "string" ? searchParams.q : "";
-  const category = typeof searchParams?.category === "string" ? searchParams.category : undefined;
-  const featuredOnly = searchParams?.featured === "true";
-  const premiumOnly = searchParams?.premium === "true";
-  const sort = parseSort(typeof searchParams?.sort === "string" ? searchParams.sort : undefined);
+  const resolvedSearchParams = await searchParams;
+  const query = typeof resolvedSearchParams?.q === "string" ? resolvedSearchParams.q : "";
+  const category = typeof resolvedSearchParams?.category === "string" ? resolvedSearchParams.category : undefined;
+  const featuredOnly = resolvedSearchParams?.featured === "true";
+  const premiumOnly = resolvedSearchParams?.premium === "true";
+  const sort = parseSort(typeof resolvedSearchParams?.sort === "string" ? resolvedSearchParams.sort : undefined);
 
   const filteredTools = sortTools(
     await searchTools(query, {

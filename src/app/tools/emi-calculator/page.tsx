@@ -134,9 +134,9 @@ export default async function EmiCalculatorPage() {
           </div>
           <div className="flex flex-wrap gap-3 mt-4">
             <Button asChild>
-              <a href={`/categories/${tool.category}`}>
+              <Link href={`/categories/${tool.category}`}>
                 Browse category <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/tools">Back to tools</Link>

@@ -72,8 +72,10 @@ export function JwtDecoderLayout() {
   }, [input]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     handleDecode();
-  }, [handleDecode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input]);
 
   // Track valid decodes (debounced)
   useEffect(() => {
@@ -102,7 +104,7 @@ export function JwtDecoderLayout() {
       await navigator.clipboard.writeText(JSON.stringify(decoded.payload, null, 2));
       setCopiedPayload(true);
       setTimeout(() => setCopiedPayload(false), 2000);
-    } catch (e) {
+    } catch {
       console.error("Failed to copy payload");
     }
   };

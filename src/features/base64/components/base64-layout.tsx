@@ -50,7 +50,7 @@ export function Base64Layout() {
       
       // Debounce analytics tracking slightly if we were to add a timeout, 
       // but simpler to just track here if output actually changed and is valid.
-    } catch (e: unknown) {
+    } catch {
       setOutput("");
       setError(mode === "encode" ? "Failed to encode input." : "Invalid Base64 string.");
     }

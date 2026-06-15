@@ -20,7 +20,7 @@ export function canonicalUrl(path: string) {
 
 export function createMetadata({ title, description, path, keywords, imagePath }: SeoMetadataInput): Metadata {
   const canonical = canonicalUrl(path);
-  const image = imagePath ? absoluteUrl(imagePath) : absoluteUrl("/og-image.svg");
+  const image = imagePath ? absoluteUrl(imagePath) : absoluteUrl("/og-image.png");
 
   return {
     title,
@@ -32,6 +32,7 @@ export function createMetadata({ title, description, path, keywords, imagePath }
       description,
       url: absoluteUrl(canonical),
       siteName: siteConfig.name,
+      locale: siteConfig.locale,
       type: "website",
       images: [
         {
@@ -106,21 +107,35 @@ export function createSoftwareApplicationStructuredData(tool: {
     applicationCategory: tool.categoryLabel,
     url: absoluteUrl(`/tools/${tool.slug}`),
     operatingSystem: "Web",
-    offers: tool.premium
-      ? {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-          category: "Premium",
-        }
-      : undefined,
-    aggregateRating: tool.featured
-      ? {
-          "@type": "AggregateRating",
-          ratingValue: "4.9",
-          ratingCount: "128",
-        }
-      : undefined,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+}
+
+export function createCollectionPageStructuredData(collection: {
+  name: string;
+  description: string;
+  url: string;
+  items: readonly { name: string; href: string; position?: number }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: collection.name,
+    description: collection.description,
+    url: absoluteUrl(collection.url),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: collection.items.map((item, index) => ({
+        "@type": "ListItem",
+        position: item.position ?? index + 1,
+        name: item.name,
+        url: absoluteUrl(item.href),
+      })),
+    },
   };
 }
 
@@ -138,7 +153,7 @@ export function createPersonStructuredData(person: {
   };
 }
 
-export function createArticleStructuredData(article: {
+export function createBlogPostingStructuredData(article: {
   title: string;
   description: string;
   canonical: string;
@@ -149,11 +164,11 @@ export function createArticleStructuredData(article: {
   section: string;
   keywords?: readonly string[];
 }) {
-  const image = article.image ? absoluteUrl(article.image) : absoluteUrl("/og-image.svg");
+  const image = article.image ? absoluteUrl(article.image) : absoluteUrl("/og-image.png");
 
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: article.title,
     description: article.description,
     mainEntityOfPage: absoluteUrl(article.canonical),
@@ -173,6 +188,21 @@ export function createArticleStructuredData(article: {
     articleSection: article.section,
     keywords: article.keywords?.join(", "),
   };
+}
+
+/** @deprecated Use createBlogPostingStructuredData instead */
+export function createArticleStructuredData(article: {
+  title: string;
+  description: string;
+  canonical: string;
+  image?: string;
+  publishedAt: Date;
+  modifiedAt: Date;
+  authorName: string;
+  section: string;
+  keywords?: readonly string[];
+}) {
+  return createBlogPostingStructuredData(article);
 }
 
 export function createFaqStructuredData(items: readonly { question: string; answer: string }[]) {

@@ -17,9 +17,10 @@ export const metadata: Metadata = createMetadata({
 export default async function CategoriesPage({
   searchParams,
 }: Readonly<{
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }>) {
-  const query = typeof searchParams?.q === "string" ? searchParams.q : "";
+  const resolvedSearchParams = await searchParams;
+  const query = typeof resolvedSearchParams?.q === "string" ? resolvedSearchParams.q : "";
   const categories = await searchCategories(query);
   const toolCategoriesList = await getToolCategories();
 
@@ -34,9 +35,9 @@ export default async function CategoriesPage({
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Categories", href: "/categories" }]} />
       <header className="space-y-3">
         <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">Categories</p>
-        <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Search categories without changing logic.</h1>
+        <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Find the Right Tool by Category</h1>
         <p className="max-w-3xl text-base leading-7 text-slate-400">
-          Categories are registry-driven and can scale as the tool library grows.
+          Browse our curated categories to quickly discover the free online tools you need.
         </p>
       </header>
 

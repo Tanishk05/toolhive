@@ -94,7 +94,7 @@ export default async function JwtDecoderPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary ring-1 ring-primary/20">3</span>
-                  <span className="ml-3"><strong>Copy the Payload:</strong> If you need the raw JSON data, just click the "Copy Payload" button next to the Payload section.</span>
+                  <span className="ml-3"><strong>Copy the Payload:</strong> If you need the raw JSON data, just click the &quot;Copy Payload&quot; button next to the Payload section.</span>
                 </li>
               </ul>
             </div>
@@ -134,9 +134,9 @@ export default async function JwtDecoderPage() {
           </div>
           <div className="flex flex-wrap gap-3 mt-4">
             <Button asChild>
-              <a href={`/categories/${tool.category}`}>
+              <Link href={`/categories/${tool.category}`}>
                 Browse category <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/tools">Back to tools</Link>

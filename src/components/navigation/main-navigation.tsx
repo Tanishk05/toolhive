@@ -26,12 +26,12 @@ export function MainNavigation({
         </Link>
         <nav aria-label="Primary" className="flex flex-wrap items-center gap-3 text-sm text-slate-300">
           {links.map((link) => (
-            <a key={link.href} className="transition hover:text-white" href={link.href}>
+            <Link key={link.href} className="transition hover:text-white" href={link.href}>
               {link.label}
-            </a>
+            </Link>
           ))}
           <Button asChild size="sm" className="ml-1">
-            <a href={ctaHref}>{ctaLabel}</a>
+            <Link href={ctaHref}>{ctaLabel}</Link>
           </Button>
           <Show when="signed-out">
             <SignInButton mode="modal">

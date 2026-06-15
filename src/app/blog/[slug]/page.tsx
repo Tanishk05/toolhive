@@ -15,7 +15,7 @@ import {
 } from "@/features/blog/blog-registry";
 import { ToolRecommendations } from "@/features/tools/components/tool-recommendations";
 import { AdUnit } from "@/components/ads/ad-unit";
-import { createArticleStructuredData, createBreadcrumbStructuredData, createMetadata, createPersonStructuredData } from "@/lib/seo";
+import { createBlogPostingStructuredData, createBreadcrumbStructuredData, createMetadata, createPersonStructuredData } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -23,8 +23,9 @@ export async function generateStaticParams() {
   return await getBlogStaticPaths();
 }
 
-export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     return {};
@@ -39,8 +40,9 @@ export async function generateMetadata({ params }: Readonly<{ params: { slug: st
   });
 }
 
-export default async function BlogPostPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const post = await getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -54,7 +56,7 @@ export default async function BlogPostPage({ params }: Readonly<{ params: { slug
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
       <JsonLd data={createBreadcrumbStructuredData(breadcrumbs)} />
       <JsonLd
-        data={createArticleStructuredData({
+        data={createBlogPostingStructuredData({
           title: post.seoTitle ?? post.title,
           description: post.seoDescription ?? post.excerpt,
           canonical: post.canonical,

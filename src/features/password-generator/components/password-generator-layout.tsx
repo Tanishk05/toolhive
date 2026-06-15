@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { KeyRound, Copy, Check, RefreshCw, ShieldCheck } from "lucide-react";
+import { Copy, Check, RefreshCw, ShieldCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { AdUnit } from "@/components/ads/ad-unit";

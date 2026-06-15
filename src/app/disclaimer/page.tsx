@@ -18,7 +18,7 @@ export default function DisclaimerPage() {
 
           <h2 className="text-xl font-semibold text-foreground mt-10">1. Website Information</h2>
           <p>
-            The information provided by ToolHive ("we," "us," or "our") on this website is for general informational purposes only. All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.
+            The information provided by ToolHive (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) on this website is for general informational purposes only. All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.
           </p>
 
           <h2 className="text-xl font-semibold text-foreground mt-10">2. External Links Disclaimer</h2>

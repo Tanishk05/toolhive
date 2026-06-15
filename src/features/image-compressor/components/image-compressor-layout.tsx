@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { useState, useRef, useEffect, useCallback } from "react";
-import { UploadCloud, Image as ImageIcon, Download, Trash2, ArrowRight } from "lucide-react";
+import { UploadCloud, Image as ImageIcon, Download, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { AdUnit } from "@/components/ads/ad-unit";
@@ -69,7 +71,7 @@ export function ImageCompressorLayout() {
     setIsCompressing(true);
 
     try {
-      const img = new Image();
+      const img = new window.Image();
       img.src = originalPreview;
       await new Promise((resolve, reject) => {
         img.onload = resolve;
@@ -278,11 +280,9 @@ export function ImageCompressorLayout() {
                   </div>
                   <div className="relative flex aspect-square sm:aspect-[4/3] items-center justify-center bg-[#0d1117] dark:bg-black/40 p-4">
                     {originalPreview && (
-                      <img 
-                        src={originalPreview} 
-                        alt="Original" 
-                        className="max-h-full max-w-full object-contain drop-shadow-md"
-                      />
+                      <>
+                        <Image src={originalPreview} alt="Original" fill className="object-contain drop-shadow-md" unoptimized />
+                      </>
                     )}
                   </div>
                 </div>
@@ -295,11 +295,9 @@ export function ImageCompressorLayout() {
                   </div>
                   <div className="relative flex aspect-square sm:aspect-[4/3] items-center justify-center bg-[#0d1117] dark:bg-black/40 p-4">
                     {compressedPreview ? (
-                      <img 
-                        src={compressedPreview} 
-                        alt="Compressed" 
-                        className="max-h-full max-w-full object-contain drop-shadow-md"
-                      />
+                      <>
+                        <Image src={compressedPreview} alt="Compressed" fill className="object-contain drop-shadow-md" unoptimized />
+                      </>
                     ) : (
                       <div className="flex items-center justify-center text-sm text-muted-foreground/50">
                         Compressing...

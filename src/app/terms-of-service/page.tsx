@@ -17,7 +17,7 @@ export default function TermsOfServicePage() {
           <p>Last updated: {new Date().toLocaleDateString()}</p>
           
           <h2 className="text-xl font-semibold text-foreground mt-10">1. Acceptance of Terms</h2>
-          <p>By accessing and using ToolHive, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using ToolHive's particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+          <p>By accessing and using ToolHive, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using ToolHive&apos;s particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
           
           <h2 className="text-xl font-semibold text-foreground mt-10">2. Description of Service</h2>
           <p>ToolHive provides users with access to a rich collection of resources, including various web-based tools, calculators, and generators. You also understand and agree that the service may include certain communications from ToolHive, such as service announcements and administrative messages.</p>
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
           <h2 className="text-xl font-semibold text-foreground mt-10">3. User Conduct</h2>
           <p>You agree to not use the service to:</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li>upload, post, email, transmit or otherwise make available any content that is unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libellous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable;</li>
+            <li>upload, post, email, transmit or otherwise make available any content that is unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libellous, invasive of another&apos;s privacy, hateful, or racially, ethnically or otherwise objectionable;</li>
             <li>impersonate any person or entity or falsely state or otherwise misrepresent your affiliation with a person or entity;</li>
             <li>interfere with or disrupt the service or servers or networks connected to the service.</li>
           </ul>

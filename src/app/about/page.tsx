@@ -20,7 +20,7 @@ export default function AboutPage() {
           
           <h2 className="text-xl font-semibold text-foreground mt-10">Our Mission</h2>
           <p>
-            We believe that basic web utilities shouldn't be hidden behind paywalls or intrusive advertisements. Our mission is to build the fastest, most reliable, and easiest-to-use collection of web tools on the internet.
+            We believe that basic web utilities shouldn&apos;t be hidden behind paywalls or intrusive advertisements. Our mission is to build the fastest, most reliable, and easiest-to-use collection of web tools on the internet.
           </p>
 
           <h2 className="text-xl font-semibold text-foreground mt-10">Privacy First</h2>
@@ -30,7 +30,7 @@ export default function AboutPage() {
 
           <h2 className="text-xl font-semibold text-foreground mt-10">Get in Touch</h2>
           <p>
-            Have a suggestion for a new tool? Found a bug? Just want to say hi? We'd love to hear from you. Head over to our Contact page to send us a message.
+            Have a suggestion for a new tool? Found a bug? Just want to say hi? We&apos;d love to hear from you. Head over to our Contact page to send us a message.
           </p>
         </div>
       </div>

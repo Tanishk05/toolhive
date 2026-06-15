@@ -1,4 +1,3 @@
-// @ts-ignore
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -14,7 +13,7 @@ export const prisma = new Proxy(
           log: ["warn", "error"],
         });
       }
-      const client = globalForPrisma.prisma as any;
+      const client = globalForPrisma.prisma as unknown as Record<string | symbol, unknown>;
       return client[prop];
     },
   }

@@ -19,8 +19,9 @@ export async function generateStaticParams() {
   return await getBlogAuthorStaticPaths();
 }
 
-export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
-  const author = await getBlogAuthorBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const author = await getBlogAuthorBySlug(slug);
 
   if (!author) {
     return {};
@@ -34,8 +35,9 @@ export async function generateMetadata({ params }: Readonly<{ params: { slug: st
   });
 }
 
-export default async function BlogAuthorPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const author = await getBlogAuthorBySlug(params.slug);
+export default async function BlogAuthorPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const author = await getBlogAuthorBySlug(slug);
 
   if (!author) {
     notFound();

@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Clock3, Tag, User } from "lucide-react";
+import { ArrowRight, Clock3, User } from "lucide-react";
 import type { BlogAuthor, BlogHeading, BlogPost } from "@/features/blog/blog-types";
 import { Card } from "@/components/ui/card";
 
@@ -27,7 +28,9 @@ export function FeaturedBlogPostCard({ post }: Readonly<{ post: Pick<BlogPost, "
         </div>
         <div className="relative hidden lg:block bg-[linear-gradient(135deg,rgba(16,185,129,0.18),rgba(15,23,42,0.88),rgba(56,189,248,0.14))]">
           {post.coverImage ? (
-            <img src={post.coverImage} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-overlay" />
+            <>
+              <Image src={post.coverImage} alt={post.title} fill className="absolute inset-0 object-cover opacity-80 mix-blend-overlay" unoptimized />
+            </>
           ) : (
             <div className="absolute inset-0 bg-slate-900/50" />
           )}
@@ -42,7 +45,9 @@ export function BlogPostCard({ post }: Readonly<{ post: Pick<BlogPost, "slug" | 
     <Card className="group flex h-full flex-col overflow-hidden p-0 transition-transform duration-300 hover:-translate-y-1">
       <div className="relative min-h-48 overflow-hidden bg-[linear-gradient(135deg,rgba(16,185,129,0.1),rgba(15,23,42,0.8),rgba(56,189,248,0.1))]">
         {post.coverImage && (
-           <img src={post.coverImage} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-105" />
+           <>
+             <Image src={post.coverImage} alt={post.title} fill className="absolute inset-0 object-cover opacity-60 transition-transform duration-500 group-hover:scale-105" unoptimized />
+           </>
         )}
       </div>
       <div className="flex flex-1 flex-col p-6">

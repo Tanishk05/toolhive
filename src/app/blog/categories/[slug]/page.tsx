@@ -19,8 +19,9 @@ export async function generateStaticParams() {
   return await getBlogCategoryStaticPaths();
 }
 
-export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
-  const category = await getBlogCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getBlogCategoryBySlug(slug);
 
   if (!category) {
     return {};
@@ -34,8 +35,9 @@ export async function generateMetadata({ params }: Readonly<{ params: { slug: st
   });
 }
 
-export default async function BlogCategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const category = await getBlogCategoryBySlug(params.slug);
+export default async function BlogCategoryPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const category = await getBlogCategoryBySlug(slug);
 
   if (!category) {
     notFound();

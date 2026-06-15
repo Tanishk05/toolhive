@@ -6,16 +6,18 @@ import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
-import { buildCategoryBreadcrumbs, getCategoryBySlug, getToolsByCategory, getToolCategories, getIconComponent } from "@/features/tools/tool-registry";
-import { createBreadcrumbStructuredData, createItemListStructuredData, createMetadata } from "@/lib/seo";
+import { buildCategoryBreadcrumbs, getCategoryBySlug, getToolsByCategory, getToolCategories, getIconName } from "@/features/tools/tool-registry";
+import { ToolIcon } from "@/features/tools/components/tool-icon";
+import { createBreadcrumbStructuredData, createCollectionPageStructuredData, createMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const categories = await getToolCategories();
   return categories.map((category) => ({ slug: category.slug }));
 }
 
-export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
-  const category = await getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
 
   if (!category) {
     return {};
@@ -29,21 +31,29 @@ export async function generateMetadata({ params }: Readonly<{ params: { slug: st
   });
 }
 
-export default async function CategoryPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const category = await getCategoryBySlug(params.slug);
+export default async function CategoryPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
 
   if (!category) {
     notFound();
   }
 
   const tools = await getToolsByCategory(category.slug);
+  const allCategories = await getToolCategories();
+  const relatedCategories = allCategories.filter((c) => c.slug !== category.slug);
   const breadcrumbs = buildCategoryBreadcrumbs(category);
-  const itemList = createItemListStructuredData(tools.map((tool, index) => ({ name: tool.name, href: `/tools/${tool.slug}`, position: index + 1 })));
+  const collectionPage = createCollectionPageStructuredData({
+    name: `${category.label} Tools`,
+    description: category.description,
+    url: `/categories/${category.slug}`,
+    items: tools.map((tool, index) => ({ name: tool.name, href: `/tools/${tool.slug}`, position: index + 1 })),
+  });
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
       <JsonLd data={createBreadcrumbStructuredData(breadcrumbs)} />
-      <JsonLd data={itemList} />
+      <JsonLd data={collectionPage} />
       <Breadcrumbs items={breadcrumbs} />
       <header className="space-y-3">
         <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">Category</p>
@@ -52,13 +62,10 @@ export default async function CategoryPage({ params }: Readonly<{ params: { slug
       </header>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {tools.map((tool) => {
-          const Icon = getIconComponent(tool.icon);
-
-          return (
+        {tools.map((tool) => (
             <Card key={tool.slug} className="p-6">
               <div className={`inline-flex rounded-3xl bg-linear-to-br ${tool.accent} p-4 ring-1 ring-white/10`}>
-                <Icon className="h-6 w-6 text-white" aria-hidden="true" />
+                <ToolIcon name={getIconName(tool.icon)} className="h-6 w-6 text-white" />
               </div>
               <h2 className="mt-4 text-2xl font-semibold text-white">{tool.name}</h2>
               <p className="mt-3 text-sm leading-6 text-slate-300">{tool.summary}</p>
@@ -68,9 +75,26 @@ export default async function CategoryPage({ params }: Readonly<{ params: { slug
                 </Link>
               </Button>
             </Card>
-          );
-        })}
+          ))}
       </section>
+
+      {/* Related Categories */}
+      {relatedCategories.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold text-white">Browse Other Categories</h2>
+          <div className="flex flex-wrap gap-3">
+            {relatedCategories.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/categories/${c.slug}`}
+                className="rounded-full border border-border bg-card px-4 py-2 text-sm text-muted-foreground transition hover:border-emerald-500/30 hover:text-foreground"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

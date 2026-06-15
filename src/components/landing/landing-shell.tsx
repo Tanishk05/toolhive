@@ -21,7 +21,7 @@ export function LandingShell({ children }: Readonly<{ children: React.ReactNode 
             <Link className="transition hover:text-foreground" href="/blog">Blog</Link>
             <Link className="transition hover:text-foreground" href="/contact">Contact</Link>
             <Button asChild size="sm" className="ml-1">
-              <a href="#featured-tools">Get started</a>
+              <Link href="#featured-tools">Get started</Link>
             </Button>
             <Show when="signed-out">
               <SignInButton mode="modal">

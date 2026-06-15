@@ -1,4 +1,4 @@
-import { type LucideIcon } from "lucide-react";
+import { cache } from "react";
 
 export type ToolCategorySlug =
   | "productivity"
@@ -49,15 +49,16 @@ export type ToolCategoryRegistryEntry = {
 
 import { prisma } from "@/lib/prisma";
 import type { Prisma, Category } from "@prisma/client";
-import * as Icons from "lucide-react";
 
-export function getIconComponent(iconName: string | null): LucideIcon {
-  if (!iconName) return Icons.Wrench as LucideIcon;
-  const icon = (Icons as Record<string, unknown>)[iconName];
-  return (icon || Icons.Wrench) as LucideIcon;
+/**
+ * Returns the icon name string for use in client components.
+ * Actual icon rendering is handled by the ToolIcon client component.
+ */
+export function getIconName(iconName: string | null): string {
+  return iconName || "Wrench";
 }
 
-export async function getToolCategories(): Promise<ToolCategoryRegistryEntry[]> {
+export const getToolCategories = cache(async function getToolCategories(): Promise<ToolCategoryRegistryEntry[]> {
   const categories = await prisma.category.findMany();
   return categories.map((cat: Category) => ({
     id: cat.id,
@@ -70,9 +71,9 @@ export async function getToolCategories(): Promise<ToolCategoryRegistryEntry[]> 
       canonical: cat.seoCanonical,
     }
   }));
-}
+});
 
-export async function getToolRegistry(): Promise<ToolRegistryEntry[]> {
+export const getToolRegistry = cache(async function getToolRegistry(): Promise<ToolRegistryEntry[]> {
   const tools = await prisma.tool.findMany({
     where: { published: true },
     include: { category: true }
@@ -106,7 +107,7 @@ export async function getToolRegistry(): Promise<ToolRegistryEntry[]> {
       canonical: tool.seoCanonical || "",
     }
   }));
-}
+});
 
 export async function getToolBySlug(slug: string) {
   const tools = await getToolRegistry();

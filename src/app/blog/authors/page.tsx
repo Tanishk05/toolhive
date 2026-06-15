@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Card } from "@/components/ui/card";
@@ -40,9 +41,9 @@ export default async function BlogAuthorsPage() {
               </div>
             </div>
             <p className="mt-4 text-sm leading-7 text-slate-300">{author.bio}</p>
-            <a href={`/blog/authors/${author.slug}`} className="mt-5 inline-flex text-sm font-medium text-emerald-300 transition hover:text-emerald-200">
+            <Link href={`/blog/authors/${author.slug}`} className="mt-5 inline-flex text-sm font-medium text-emerald-300 transition hover:text-emerald-200">
               View profile
-            </a>
+            </Link>
           </Card>
         ))}
       </section>

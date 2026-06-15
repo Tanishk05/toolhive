@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ToolHive 🐝
 
-## Getting Started
+ToolHive is a modern, ultra-fast, and minimal collection of web utilities designed for developers, creators, and everyday users. Built with a strict "Server-First" architecture, ToolHive prioritizes performance, technical SEO, and exceptional user experience.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+ToolHive provides a growing registry of 100% free, client-side, privacy-focused tools:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Developer Tools**: JWT Decoder, JSON Formatter, Base64 Encoder/Decoder, UUID Generator
+- **Content & Media**: Image Compressor (Offline/Client-side WebP/JPEG/PNG optimization)
+- **Business & Finance**: EMI Calculator, GST Calculator
+- **Productivity**: Secure Password Generator, QR Code Generator, Age Calculator, Unit Converter
+- **Content Hub**: Fully integrated SEO-optimized Blog and Category pages with structured data.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### ⚡ Performance & SEO First
+- **Lighthouse Scores**: Engineered to achieve > 95 in Performance, SEO, and Accessibility.
+- **Server Components**: Leverages Next.js App Router and Server Components to minimize hydration overhead and bundle sizes.
+- **Dynamic Imports**: Heavy components and icons are dynamically loaded to keep initial loads blazing fast.
+- **Rich Structured Data**: Automatic generation of `WebSite`, `FAQPage`, `CollectionPage`, and `BlogPosting` JSON-LD schemas.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework**: [Next.js 16+](https://nextjs.org/) (App Router, React 19)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **UI Components**: Radix UI primitives, custom minimal tokens
+- **Deployment**: [Vercel](https://vercel.com/)
+- **Analytics**: Custom lightweight edge tracking
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
+- Node.js (v18+)
+- MongoDB connection string
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Tanishk05/toolhive.git
+   cd toolhive
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Set up environment variables:**
+   Create a `.env` file in the root directory and add your database URL:
+   ```env
+   DATABASE_URL="mongodb+srv://<username>:<password>@cluster.mongodb.net/toolhive"
+   ```
+
+4. **Initialize the Database:**
+   Push the Prisma schema and seed the initial tool registry:
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   npm run seed
+   ```
+   *(Note: You can run `node prisma/seed.js` manually if the npm script is absent).*
+
+5. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to explore ToolHive.
+
+## 🏗️ Architecture Notes
+
+- **Admin Dashboard**: Contains a robust `/admin` route for managing the tool registry, blog posts, feature flags, and viewing edge analytics.
+- **Tool Registry (`src/features/tools`)**: A central dynamic registry connecting category mappings, search term indexing, and popularity scoring.
+- **Linting & Code Quality**: The project enforces a strictly 0-warning build policy across ESLint and TypeScript.
+
+## 📄 License
+
+This project is open-source. Please see the [LICENSE](LICENSE) file for more information.

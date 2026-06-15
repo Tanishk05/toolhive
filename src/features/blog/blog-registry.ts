@@ -1,3 +1,4 @@
+import { cache } from "react";
 import readingTime from "reading-time";
 import GithubSlugger from "github-slugger";
 import { toString } from "mdast-util-to-string";
@@ -102,7 +103,7 @@ function mapPrismaPostToBlogPost(post: PrismaBlogPostWithRelations): BlogPost {
   };
 }
 
-export async function getBlogPosts(): Promise<BlogPost[]> {
+export const getBlogPosts = cache(async function getBlogPosts(): Promise<BlogPost[]> {
   const posts = await prisma.blogPost.findMany({
     where: { published: true },
     include: {
@@ -112,7 +113,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     orderBy: { createdAt: "desc" },
   });
   return posts.map(mapPrismaPostToBlogPost);
-}
+});
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
   const post = await prisma.blogPost.findFirst({

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Landmark, IndianRupee, Percent, Calendar } from "lucide-react";
+import { IndianRupee, Percent } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -253,7 +253,7 @@ export function EmiCalculatorLayout() {
                           ))}
                         </Pie>
                         <Tooltip 
-                          formatter={(value: any) => formatCurrency(Number(value) || 0)}
+                          formatter={(value: unknown) => formatCurrency(Number(value) || 0)}
                           contentStyle={{ borderRadius: "8px", border: "1px solid var(--border)", backgroundColor: "var(--background)" }}
                         />
                       </PieChart>

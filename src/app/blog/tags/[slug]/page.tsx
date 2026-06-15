@@ -19,8 +19,9 @@ export async function generateStaticParams() {
   return await getBlogTagStaticPaths();
 }
 
-export async function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
-  const tag = await getBlogTagBySlug(params.slug);
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const tag = await getBlogTagBySlug(slug);
 
   if (!tag) {
     return {};
@@ -34,8 +35,9 @@ export async function generateMetadata({ params }: Readonly<{ params: { slug: st
   });
 }
 
-export default async function BlogTagPage({ params }: Readonly<{ params: { slug: string } }>) {
-  const tag = await getBlogTagBySlug(params.slug);
+export default async function BlogTagPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const tag = await getBlogTagBySlug(slug);
 
   if (!tag) {
     notFound();

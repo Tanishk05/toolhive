@@ -20,7 +20,7 @@ export function SearchBar({
   params?: Readonly<Record<string, string | undefined>>;
 }>) {
   const [query, setQuery] = useState(defaultValue);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
 

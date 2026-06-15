@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarDays, ArrowUpRight, ChevronDown, Zap, Smartphone, ShieldCheck, Download, Search, Globe } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -19,6 +16,7 @@ import { Card } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search";
 import { ToolCard } from "@/components/marketing/tool-card";
 import { AdUnit } from "@/components/ads/ad-unit";
+import { Reveal } from "@/components/ui/reveal-animation";
 import { type getLandingContent } from "@/constants/landing-content";
 
 export function LandingPage({ content }: { content: Awaited<ReturnType<typeof getLandingContent>> }) {
@@ -29,37 +27,35 @@ export function LandingPage({ content }: { content: Awaited<ReturnType<typeof ge
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.1),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.08),transparent_40%),linear-gradient(180deg,rgba(0,0,0,0.02),transparent)] dark:bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.15),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" aria-hidden="true" />
         
         <div className="relative mx-auto max-w-4xl px-5 py-16 text-center sm:px-8 sm:py-24 lg:px-10 lg:py-32">
-          <Reveal>
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-                  {content.hero.title}
-                </h1>
-                <p className="mx-auto max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-                  {content.hero.description}
-                </p>
-              </div>
-
-              {/* Main Search Bar */}
-              <div className="mx-auto max-w-2xl">
-                <SearchBar action="/tools" placeholder="Search for tools, calculators, and generators..." />
-              </div>
-
-              {/* Quick Searches */}
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-4 text-sm">
-                <span className="text-muted-foreground">Popular:</span>
-                {content.hero.quickSearches.map((term) => (
-                  <Link
-                    key={term}
-                    href={`/tools?q=${encodeURIComponent(term)}`}
-                    className="rounded-full border border-border bg-muted/50 px-3 py-1 text-muted-foreground transition hover:bg-primary/10 hover:text-primary"
-                  >
-                    {term}
-                  </Link>
-                ))}
-              </div>
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+                {content.hero.title}
+              </h1>
+              <p className="mx-auto max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                {content.hero.description}
+              </p>
             </div>
-          </Reveal>
+
+            {/* Main Search Bar */}
+            <div className="mx-auto max-w-2xl">
+              <SearchBar action="/tools" placeholder="Search for tools, calculators, and generators..." />
+            </div>
+
+            {/* Quick Searches */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-4 text-sm">
+              <span className="text-muted-foreground">Popular:</span>
+              {content.hero.quickSearches.map((term) => (
+                <Link
+                  key={term}
+                  href={`/tools?q=${encodeURIComponent(term)}`}
+                  className="rounded-full border border-border bg-muted/50 px-3 py-1 text-muted-foreground transition hover:bg-primary/10 hover:text-primary"
+                >
+                  {term}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -197,44 +193,23 @@ export function LandingPage({ content }: { content: Awaited<ReturnType<typeof ge
 
       {/* Final CTA */}
       <section className="rounded-[2.5rem] border border-border bg-card p-8 py-16 text-center shadow-sm dark:border-primary/20 dark:bg-[linear-gradient(135deg,rgba(16,185,129,0.1),rgba(15,23,42,0.8),rgba(59,130,246,0.1))] dark:shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:p-16">
-        <Reveal>
-          <div className="mx-auto max-w-2xl space-y-8">
-            <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Find the Right Tool in Seconds
-            </h2>
-            <p className="text-lg leading-8 text-muted-foreground">
-              Stop bookmarking dozens of random websites. Access all the free utilities you need in one fast, ad-free platform.
-            </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button asChild size="lg" className="px-8">
-                <Link href="/tools">Explore All Tools</Link>
-              </Button>
-            </div>
+        <div className="mx-auto max-w-2xl space-y-8">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Find the Right Tool in Seconds
+          </h2>
+          <p className="text-lg leading-8 text-muted-foreground">
+            Stop bookmarking dozens of random websites. Access all the free utilities you need in one fast, ad-free platform.
+          </p>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button asChild size="lg" className="px-8">
+              <Link href="/tools">Explore All Tools</Link>
+            </Button>
           </div>
-        </Reveal>
+        </div>
       </section>
       <AdUnit format="horizontal" slotId="landing-page-footer" />
       <Footer content={content} />
     </LandingShell>
-  );
-}
-
-function Reveal({ children, delay = 0 }: Readonly<{ children: React.ReactNode; delay?: number }>) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div>{children}</div>;
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay }}
-    >
-      {children}
-    </motion.div>
   );
 }
 
