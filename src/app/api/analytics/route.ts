@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { fail, ok } from "@/lib/api-response";
 import { isAnalyticsEventName } from "@/lib/analytics/events";
@@ -32,7 +31,7 @@ export async function POST(request: NextRequest) {
         name: payload.data.name,
         userId: payload.data.userId,
         source: "web",
-        payload: payload.data.properties as Prisma.InputJsonValue | undefined,
+        payload: payload.data.properties as any,
         createdAt: payload.data.timestamp ? new Date(payload.data.timestamp) : undefined,
       },
     });
