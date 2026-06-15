@@ -1,4 +1,4 @@
-import type { SubscriptionStatus } from "@prisma/client";
+export type SubscriptionStatus = string;
 
 export type SubscriptionPlan = "free" | "pro" | "team";
 
