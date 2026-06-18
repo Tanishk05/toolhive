@@ -72,11 +72,11 @@ export function ContactForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center gap-4 py-12 text-center"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/10 ring-1 ring-emerald-400/20">
-          <CheckCircle2 className="h-8 w-8 text-emerald-300" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <CheckCircle2 className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="text-xl font-semibold text-white">Message sent!</h3>
-        <p className="max-w-sm text-sm text-slate-400">
+        <h3 className="text-xl font-semibold text-foreground">Message sent!</h3>
+        <p className="max-w-sm text-sm text-muted-foreground/60">
           Thank you for reaching out. We&rsquo;ll review your message and get back to you within 1–2 business days.
         </p>
         <Button
@@ -109,7 +109,7 @@ export function ContactForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <label htmlFor="contact-name" className="text-sm font-medium text-slate-300">
+          <label htmlFor="contact-name" className="text-sm font-medium text-muted-foreground">
             Name
           </label>
           <Input
@@ -124,7 +124,7 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="contact-email" className="text-sm font-medium text-slate-300">
+          <label htmlFor="contact-email" className="text-sm font-medium text-muted-foreground">
             Email
           </label>
           <Input
@@ -141,7 +141,7 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="contact-subject" className="text-sm font-medium text-slate-300">
+        <label htmlFor="contact-subject" className="text-sm font-medium text-muted-foreground">
           Subject
         </label>
         <Select
@@ -164,7 +164,7 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="contact-message" className="text-sm font-medium text-slate-300">
+        <label htmlFor="contact-message" className="text-sm font-medium text-muted-foreground">
           Message
         </label>
         <Textarea

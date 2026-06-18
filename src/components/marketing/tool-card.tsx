@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 export function ToolCard({
   name,
   description,
   tags,
-  accent,
   slug,
-  label = "Featured tool",
 }: Readonly<{
   name: string;
   description: string;
@@ -18,45 +15,36 @@ export function ToolCard({
   label?: string;
 }>) {
   return (
-    <Card className="group relative flex h-full flex-col overflow-hidden border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.03)]">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius)] bg-surface transition-all duration-300 hover:-translate-y-1.5 hover:bg-surface-hover hover:shadow-[0_8px_40px_rgba(0,0,0,0.2),0_0_0_1px_rgba(143,175,147,0.05)]">
       
-      {/* Top Header Section with smooth gradient fade */}
-      <div className="relative p-6 sm:p-8 pb-4">
-        <div className={`absolute inset-0 bg-linear-to-br ${accent} opacity-[0.15] mix-blend-plus-lighter dark:opacity-20`} />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/50 to-card" />
-        
-        <div className="relative flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase opacity-90">
-              {label}
-            </p>
-            <h3 className="mt-3 text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+      <div className="relative flex flex-1 flex-col p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
               {name}
             </h3>
           </div>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background/50 text-muted-foreground shadow-xs ring-1 ring-border backdrop-blur-sm transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:ring-primary">
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.04] text-muted-foreground/30 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:bg-primary/10 group-hover:text-primary">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
           </div>
         </div>
-      </div>
 
-      <div className="relative z-10 flex flex-1 flex-col p-6 sm:p-8 pt-0">
-        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
+        <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground/60 line-clamp-2">
           {description}
         </p>
 
-        <div className="mt-auto pt-6 flex flex-wrap gap-2">
-          {tags.slice(0, 3).map((tag) => (
+        <div className="mt-auto pt-5 flex flex-wrap gap-1.5">
+          {tags.slice(0, 2).map((tag) => (
             <span 
               key={tag} 
-              className="inline-flex items-center rounded-md bg-muted/40 px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-border/50 transition-colors group-hover:bg-muted group-hover:text-foreground"
+              className="rounded-full bg-white/[0.03] px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground/45 transition-colors group-hover:text-muted-foreground/60"
             >
               {tag}
             </span>
           ))}
-          {tags.length > 3 && (
-            <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-muted-foreground/60">
-              +{tags.length - 3}
+          {tags.length > 2 && (
+            <span className="px-1 text-[11px] text-muted-foreground/30">
+              +{tags.length - 2}
             </span>
           )}
         </div>
@@ -65,6 +53,6 @@ export function ToolCard({
       <Link href={`/tools/${slug}`} className="absolute inset-0 z-20">
         <span className="sr-only">View {name}</span>
       </Link>
-    </Card>
+    </div>
   );
 }

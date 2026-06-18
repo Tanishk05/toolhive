@@ -21,9 +21,9 @@ export function AppProviders({ children }: Readonly<{ children: React.ReactNode 
           theme="dark"
           toastOptions={{
             classNames: {
-              toast: "border border-white/10 bg-slate-950 text-slate-100",
-              description: "text-slate-300",
-              actionButton: "bg-emerald-400 text-slate-950",
+              toast: "bg-surface text-foreground shadow-[0_4px_24px_rgba(0,0,0,0.2)]",
+              description: "text-muted-foreground",
+              actionButton: "bg-primary text-primary-foreground",
             },
           }}
         />

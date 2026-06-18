@@ -83,14 +83,14 @@ export default function RootLayout({
         {/* DNS Prefetch & Preconnect for critical third-party origins */}
         <link rel="dns-prefetch" href="https://img.clerk.com" />
         <link rel="preconnect" href="https://img.clerk.com" crossOrigin="anonymous" />
-        {analyticsConfig.googleAnalyticsMeasurementId ? (
+        {process.env.NODE_ENV === "production" && analyticsConfig.googleAnalyticsMeasurementId ? (
           <>
             <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
             <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
           </>
         ) : null}
       </head>
-      <body className="min-h-full bg-background text-foreground">
+      <body className="min-h-full overflow-x-hidden bg-background text-foreground">
         <ClerkProvider>
           <JsonLd data={createOrganizationStructuredData()} />
           <JsonLd data={createWebSiteStructuredData()} />

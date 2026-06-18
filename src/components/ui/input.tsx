@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
-  "flex w-full rounded-full border border-input bg-card px-4 text-sm text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
+  "flex w-full rounded-2xl bg-surface px-4 text-sm text-foreground shadow-sm ring-1 ring-white/[0.06] transition-all placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -30,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         aria-invalid={error ? true : ariaInvalid}
-        className={cn(inputVariants({ size }), error && "border-destructive focus-visible:ring-destructive", className)}
+        className={cn(inputVariants({ size }), error && "ring-destructive focus-visible:ring-destructive", className)}
         {...props}
       />
     );

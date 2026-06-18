@@ -56,10 +56,10 @@ export function NewsletterForm() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="flex items-center gap-3 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-5 py-3"
+            className="flex items-center gap-3 rounded-full bg-primary/10 px-5 py-3"
           >
-            <Check className="h-4 w-4 text-emerald-300" />
-            <span className="text-sm font-medium text-emerald-200">
+            <Check className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
               You&rsquo;re subscribed! Check your inbox.
             </span>
           </motion.div>

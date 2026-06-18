@@ -2,6 +2,8 @@ import Script from "next/script";
 import { analyticsConfig } from "@/lib/analytics/config";
 
 export function AnalyticsScripts() {
+  if (process.env.NODE_ENV !== "production") return null;
+
   return (
     <>
       {analyticsConfig.googleAnalyticsMeasurementId ? (

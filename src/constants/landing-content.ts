@@ -1,10 +1,12 @@
 import { getFeaturedTools, sortTools, getToolCategories, getToolRegistry } from "@/features/tools/tool-registry";
+import { getBlogRecentPosts } from "@/features/blog/blog-registry";
 
 
 export async function getLandingContent() {
   const featuredTools = await getFeaturedTools();
   const registry = await getToolRegistry();
   const categories = await getToolCategories();
+  const recentBlogs = await getBlogRecentPosts(3);
 
   return {
     hero: {
@@ -21,6 +23,7 @@ export async function getLandingContent() {
       slug: tool.slug,
     })),
     popularTools: sortTools(registry, "popular").slice(0, 8),
+    searchSuggestions: registry.map((t) => ({ label: t.name, href: `/tools/${t.slug}` })),
     categories: categories.map((category) => ({
       label: category.label,
       description: category.description,
@@ -58,29 +61,13 @@ export async function getLandingContent() {
       icon: "Globe",
     },
   ],
-  blogPosts: [
-    {
-      title: "How to design a utility marketplace that users return to",
-      excerpt: "Principles for pairing discovery, trust, and content around tools people actually need.",
-      category: "Strategy",
-      readTime: "6 min read",
-      slug: "designing-utility-marketplace",
-    },
-    {
-      title: "The case for feature-based architecture in fast-moving products",
-      excerpt: "Why boundaries matter once you start shipping tools, billing, and analytics in parallel.",
-      category: "Engineering",
-      readTime: "8 min read",
-      slug: "feature-based-architecture",
-    },
-    {
-      title: "What makes a tool page convert without feeling noisy",
-      excerpt: "A simple checklist for better structure, lighter motion, and clearer calls to action.",
-      category: "Design",
-      readTime: "5 min read",
-      slug: "tool-page-conversion",
-    },
-  ],
+  blogPosts: recentBlogs.map((post) => ({
+    title: post.title,
+    excerpt: post.excerpt,
+    category: post.categoryProfile?.label || post.category || "General",
+    readTime: post.readingTime,
+    slug: post.slug,
+  })),
   faqs: [
     {
       question: "Are the tools completely free to use?",

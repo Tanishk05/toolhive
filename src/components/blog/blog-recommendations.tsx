@@ -18,14 +18,14 @@ export async function BlogRecommendations({ tags }: Readonly<{ tags: readonly st
   );
 
   return (
-    <section className="mt-16 space-y-6 border-t border-white/10 pt-16">
+    <section className="mt-20 space-y-6 pt-16">
       <JsonLd data={itemList} />
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-medium tracking-[0.28em] text-emerald-300 uppercase">Learn & Build</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Related Guides & Tutorials</h2>
+          <p className="text-xs font-medium tracking-[0.35em] text-primary/70 uppercase">Learn & Build</p>
+          <h2 className="mt-2 text-2xl font-bold text-foreground">Related Guides & Tutorials</h2>
         </div>
-        <Button variant="ghost" className="hidden text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10 sm:flex" asChild>
+        <Button variant="ghost" className="hidden text-primary hover:text-primary hover:bg-primary/10 sm:flex" asChild>
           <Link href="/blog">
             View all guides <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
@@ -39,7 +39,7 @@ export async function BlogRecommendations({ tags }: Readonly<{ tags: readonly st
       </div>
       
       <div className="mt-4 sm:hidden">
-        <Button variant="outline" className="w-full text-slate-300" asChild>
+        <Button variant="outline" className="w-full text-muted-foreground" asChild>
           <Link href="/blog">
             View all guides <ArrowRight className="ml-2 h-4 w-4" />
           </Link>

@@ -2,13 +2,15 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const cardVariants = cva("rounded-[var(--radius)] border text-card-foreground transition-shadow", {
+const cardVariants = cva("rounded-[var(--radius)] text-card-foreground transition-all duration-300", {
   variants: {
     variant: {
-      default: "border-border bg-card shadow-sm",
-      elevated: "border-border bg-card shadow-[0_24px_80px_rgba(0,0,0,0.12)]",
-      glass: "border-white/10 bg-white/5 backdrop-blur-xl shadow-sm",
-      outline: "border-border bg-transparent",
+      default: "bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.2),0_8px_32px_rgba(0,0,0,0.12)]",
+      elevated: "bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2),0_16px_64px_rgba(0,0,0,0.16)]",
+      glass: "bg-white/[0.03] backdrop-blur-2xl shadow-[0_2px_16px_rgba(0,0,0,0.12)]",
+      floating:
+        "bg-surface shadow-[0_2px_12px_rgba(0,0,0,0.15),0_12px_48px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2),0_24px_80px_rgba(0,0,0,0.16),0_0_0_1px_rgba(143,175,147,0.06)]",
+      outline: "border border-border bg-transparent",
     },
     padding: {
       none: "",
@@ -38,7 +40,7 @@ function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElem
 }
 
 function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("text-sm text-slate-400", className)} {...props} />;
+  return <p className={cn("text-sm text-muted-foreground", className)} {...props} />;
 }
 
 function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
