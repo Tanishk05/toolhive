@@ -1,5 +1,7 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { GlobalSearchWrapper } from "@/components/search/global-search-wrapper";
+import { AssistantPanel } from "@/components/ai/assistant-panel";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +11,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         {children}
       </div>
       <SiteFooter />
+      <GlobalSearchWrapper />
+      <AssistantPanel />
     </div>
   );
 }

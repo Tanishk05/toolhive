@@ -32,13 +32,16 @@ model User {
   bio             String?
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  subscriptions   Subscription[]
-  payments        Payment[]
-  savedTools      SavedTool[]
-  analyticsEvents AnalyticsEvent[]
-  contactMessages ContactMessage[]
-  blogPosts       BlogPost[]
-  auditLogs       AuditLog[]
+  subscriptions    Subscription[]
+  payments         Payment[]
+  savedTools       SavedTool[]
+  recentActivities RecentActivity[]
+  analyticsEvents  AnalyticsEvent[]
+  contactMessages  ContactMessage[]
+  blogPosts        BlogPost[]
+  auditLogs        AuditLog[]
+  collections      Collection[]
+  ratings          ToolRating[]
 }
 
 model SavedTool {
@@ -49,6 +52,16 @@ model SavedTool {
   createdAt DateTime @default(now())
 
   @@unique([userId, toolSlug])
+}
+
+model RecentActivity {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  toolSlug  String
+  visitedAt DateTime @default(now())
+
+  @@index([userId, visitedAt])
 }
 
 model Category {
@@ -187,6 +200,47 @@ model FeatureFlag {
   name        String
   description String?
   enabled     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Collection {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  slug        String   @unique
+  description String?
+  isPublic    Boolean  @default(false)
+  tools       String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ToolRating {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  toolSlug  String
+  rating    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, toolSlug])
+  @@index([toolSlug])
+}
+
+model Toolkit {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  title       String
+  description String
+  workflow    String?
+  tips        String?
+  tools       String[]
+  creatorId   String?  @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

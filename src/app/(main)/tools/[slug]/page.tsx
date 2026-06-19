@@ -5,6 +5,8 @@ import { ArrowRight, BadgeInfo } from "lucide-react";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { ToolAnalytics } from "@/components/analytics/tool-analytics";
 import { Button } from "@/components/ui/button";
+import { FavoriteButton } from "@/features/tools/components/favorite-button";
+import { ToolRating } from "@/components/tools/tool-rating";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildToolBreadcrumbs, getToolBySlug, getToolRegistry, getIconName } from "@/features/tools/tool-registry";
@@ -71,6 +73,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
           <div className="space-y-4">
             <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">{tool.categoryLabel}</p>
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Free Online {tool.name}</h1>
+            <ToolRating slug={tool.slug} />
             <p className="max-w-3xl text-base leading-7 text-slate-300">{tool.seo.description || tool.description}</p>
             <p className="max-w-3xl text-sm leading-6 text-slate-400">{tool.summary}</p>
           </div>
@@ -90,6 +93,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
             <Button variant="outline" asChild>
               <Link href="/tools">Back to tools</Link>
             </Button>
+            <FavoriteButton toolSlug={tool.slug} />
           </div>
         </Card>
 

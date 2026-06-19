@@ -4,6 +4,7 @@ import { ArrowRight, BadgeInfo, CalendarHeart, ChevronDown } from "lucide-react"
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { ToolAnalytics } from "@/components/analytics/tool-analytics";
 import { Button } from "@/components/ui/button";
+import { FavoriteButton } from "@/features/tools/components/favorite-button";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildToolBreadcrumbs, getToolBySlug } from "@/features/tools/tool-registry";
@@ -141,6 +142,7 @@ export default async function AgeCalculatorPage() {
             <Button variant="outline" asChild>
               <Link href="/tools">Back to tools</Link>
             </Button>
+            <FavoriteButton toolSlug={tool.slug} />
           </div>
         </Card>
       </section>

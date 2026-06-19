@@ -17,6 +17,7 @@ import { ToolCard } from "@/components/marketing/tool-card";
 import { AdUnit } from "@/components/ads/ad-unit";
 import { Reveal } from "@/components/ui/reveal-animation";
 import { type getLandingContent } from "@/constants/landing-content";
+import { TrendingSection } from "@/components/tools/trending-tools";
 
 export function LandingPage({ content }: { content: Awaited<ReturnType<typeof getLandingContent>> }) {
   return (
@@ -154,31 +155,8 @@ export function LandingPage({ content }: { content: Awaited<ReturnType<typeof ge
           </div>
         </SectionBlock>
 
-        {/* ═══ Popular Tools ═══ */}
-        <SectionBlock
-          eyebrow="Trending"
-          title="Most popular free tools"
-          id="popular-tools"
-        >
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {content.popularTools.map((tool, index) => (
-              <Reveal key={tool.slug} delay={0.04 * index} className="flex flex-col h-full">
-                <ToolCard
-                  slug={tool.slug}
-                  name={tool.name}
-                  description={tool.description}
-                  tags={tool.tags}
-                  accent={tool.accent}
-                />
-              </Reveal>
-            ))}
-          </div>
-          <div className="mt-10 flex justify-center">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/tools">View all {content.popularTools.length}+ tools</Link>
-            </Button>
-          </div>
-        </SectionBlock>
+        {/* ═══ Dynamic Trending & Most Saved Tools ═══ */}
+        <TrendingSection />
 
         {/* ═══ FAQ ═══ */}
         <SectionBlock
