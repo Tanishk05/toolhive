@@ -15,6 +15,7 @@ import { ToolRecommendations } from "@/features/tools/components/tool-recommenda
 import { BlogRecommendations } from "@/components/blog/blog-recommendations";
 import { AdUnit } from "@/components/ads/ad-unit";
 import { toolSeoContent } from "@/constants/tool-seo-content";
+import { ToolHeaderMobile } from "@/features/tools/components/tool-header-mobile";
 import {
   createBreadcrumbStructuredData,
   createFaqStructuredData,
@@ -64,7 +65,10 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
       {seoContent?.faqs && seoContent.faqs.length > 0 && (
         <JsonLd data={createFaqStructuredData(seoContent.faqs)} />
       )}
-      <Breadcrumbs items={breadcrumbs} />
+      <ToolHeaderMobile toolName={tool.name} toolSlug={tool.slug} iconName={tool.icon || "tool"} />
+      <div className="hidden md:block">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <Card className="overflow-hidden p-8">
           <div className={`mb-6 inline-flex rounded-3xl bg-linear-to-br ${tool.accent} p-4 ring-1 ring-white/10`}>

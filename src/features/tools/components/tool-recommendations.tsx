@@ -37,17 +37,18 @@ export async function ToolRecommendations({ currentToolSlug, relatedTags }: Read
         </Button>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-2 xl:grid-cols-3">
         {recommendedTools.map((tool) => (
-          <ToolCard
-            key={tool.slug}
-            slug={tool.slug}
-            name={tool.name}
-            description={tool.description}
-            tags={tool.tags}
-            accent={tool.accent}
-            label={tool.categoryLabel}
-          />
+          <div key={tool.slug} className="snap-center shrink-0 w-[85vw] max-w-[320px] md:w-auto md:max-w-none flex flex-col">
+            <ToolCard
+              slug={tool.slug}
+              name={tool.name}
+              description={tool.description}
+              tags={tool.tags}
+              accent={tool.accent}
+              label={tool.categoryLabel}
+            />
+          </div>
         ))}
       </div>
       

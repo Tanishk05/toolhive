@@ -7,7 +7,7 @@ import { SearchTrigger } from "@/components/search/search-trigger";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-4 z-40 mb-8 rounded-[1.75rem] bg-background/70 px-5 py-4 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,0.1),0_8px_32px_rgba(0,0,0,0.08)]">
+    <header className="hidden md:block sticky top-4 z-40 mb-8 rounded-[1.75rem] bg-background/70 px-5 py-4 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,0.1),0_8px_32px_rgba(0,0,0,0.08)]">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center gap-3 self-start rounded-full px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">

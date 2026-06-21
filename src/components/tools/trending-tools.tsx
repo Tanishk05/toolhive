@@ -16,11 +16,11 @@ export async function TrendingSection() {
   return (
     <div className="space-y-24">
       {trendingThisWeek.length > 0 && (
-        <section id="trending-this-week" className="space-y-10 scroll-mt-28">
+        <section id="trending-this-week" className="space-y-6 md:space-y-10 scroll-mt-28">
           <SectionHeading eyebrow="Trending" title="Trending This Week" />
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-2 xl:grid-cols-4">
             {trendingThisWeek.map((tool, index) => (
-              <Reveal key={tool.slug} delay={0.04 * index} className="flex flex-col h-full">
+              <Reveal key={tool.slug} delay={0.04 * index} className="snap-center shrink-0 w-[85vw] max-w-[320px] md:w-auto md:max-w-none flex flex-col h-full">
                 <ToolCard
                   slug={tool.slug}
                   name={tool.name}
@@ -35,11 +35,11 @@ export async function TrendingSection() {
       )}
 
       {mostSaved.length > 0 && (
-        <section id="most-saved" className="space-y-10 scroll-mt-28">
+        <section id="most-saved" className="space-y-6 md:space-y-10 scroll-mt-28">
           <SectionHeading eyebrow="Favorites" title="Most Saved Tools" />
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-2 xl:grid-cols-4">
             {mostSaved.map((tool, index) => (
-              <Reveal key={tool.slug} delay={0.04 * index} className="flex flex-col h-full">
+              <Reveal key={tool.slug} delay={0.04 * index} className="snap-center shrink-0 w-[85vw] max-w-[320px] md:w-auto md:max-w-none flex flex-col h-full">
                 <ToolCard
                   slug={tool.slug}
                   name={tool.name}

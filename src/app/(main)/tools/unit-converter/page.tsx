@@ -11,6 +11,7 @@ import { buildToolBreadcrumbs, getToolBySlug } from "@/features/tools/tool-regis
 import { ToolRecommendations } from "@/features/tools/components/tool-recommendations";
 import { createBreadcrumbStructuredData, createFaqStructuredData, createMetadata, createSoftwareApplicationStructuredData } from "@/lib/seo";
 import { UnitConverterLayout } from "@/features/unit-converter/components/unit-converter-layout";
+import { ToolHeaderMobile } from "@/features/tools/components/tool-header-mobile";
 
 export async function generateMetadata(): Promise<Metadata> {
   const tool = await getToolBySlug("unit-converter");
@@ -57,7 +58,10 @@ export default async function UnitConverterPage() {
       <JsonLd data={createBreadcrumbStructuredData(breadcrumbs)} />
       <JsonLd data={softwareApplication} />
       <JsonLd data={faqSchema} />
-      <Breadcrumbs items={breadcrumbs} />
+      <ToolHeaderMobile toolName={tool.name} toolSlug={tool.slug} iconName={tool.icon || "tool"} />
+      <div className="hidden md:block">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
 
       <section className="mb-4">
         <Card className="overflow-hidden p-8 border-border bg-card">

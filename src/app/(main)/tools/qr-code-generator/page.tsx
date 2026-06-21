@@ -11,6 +11,7 @@ import { buildToolBreadcrumbs, getToolBySlug } from "@/features/tools/tool-regis
 import { ToolRecommendations } from "@/features/tools/components/tool-recommendations";
 import { createBreadcrumbStructuredData, createMetadata, createSoftwareApplicationStructuredData, createFaqStructuredData } from "@/lib/seo";
 import { QrGeneratorLayout } from "@/features/qr-code/components/qr-generator-layout";
+import { ToolHeaderMobile } from "@/features/tools/components/tool-header-mobile";
 
 export async function generateMetadata(): Promise<Metadata> {
   const tool = await getToolBySlug("qr-code-generator");
@@ -57,7 +58,10 @@ export default async function QrCodeGeneratorPage() {
       <JsonLd data={createBreadcrumbStructuredData(breadcrumbs)} />
       <JsonLd data={softwareApplication} />
       <JsonLd data={faqSchema} />
-      <Breadcrumbs items={breadcrumbs} />
+      <ToolHeaderMobile toolName={tool.name} toolSlug={tool.slug} iconName={tool.icon || "tool"} />
+      <div className="hidden md:block">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
 
       {/* Header section similar to the dynamic shell, but tailored */}
       <section className="mb-4">

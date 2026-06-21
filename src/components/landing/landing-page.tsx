@@ -18,13 +18,16 @@ import { AdUnit } from "@/components/ads/ad-unit";
 import { Reveal } from "@/components/ui/reveal-animation";
 import { type getLandingContent } from "@/constants/landing-content";
 import { TrendingSection } from "@/components/tools/trending-tools";
+import { MobileHero } from "@/components/landing/mobile-hero";
 
 export function LandingPage({ content }: { content: Awaited<ReturnType<typeof getLandingContent>> }) {
   return (
     <>
-      <div className="flex flex-col gap-24 lg:gap-32">
-        {/* ═══ Hero Section ═══ */}
-        <section className="relative pt-24 pb-12 sm:pt-32 sm:pb-16 lg:pt-40 lg:pb-24">
+      <div className="flex flex-col gap-12 md:gap-24 lg:gap-32">
+        <MobileHero />
+
+        {/* ═══ Desktop Hero Section ═══ */}
+        <section className="hidden md:block relative pt-24 pb-12 sm:pt-32 sm:pb-16 lg:pt-40 lg:pb-24">
           {/* Gradient orbs */}
           <div className="pointer-events-none absolute inset-0" aria-hidden="true">
             <div className="absolute -top-32 left-1/2 h-[480px] w-[640px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(143,175,147,0.12),transparent_70%)] blur-3xl" />
