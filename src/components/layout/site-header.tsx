@@ -4,6 +4,7 @@ import { Bookmark, Folder, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { SearchTrigger } from "@/components/search/search-trigger";
+import { SiteNavLinks } from "@/components/navigation/site-nav-links";
 
 export function SiteHeader() {
   return (
@@ -18,11 +19,8 @@ export function SiteHeader() {
           </Link>
           <SearchTrigger />
         </div>
-        <nav aria-label="Primary" className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
-          <Link className="transition-colors hover:text-foreground" href="/tools">Tools</Link>
-          <Link className="transition-colors hover:text-foreground" href="/categories">Categories</Link>
-          <Link className="transition-colors hover:text-foreground" href="/blog">Blog</Link>
-          <Link className="transition-colors hover:text-foreground" href="/contact">Contact</Link>
+        <nav aria-label="Primary" className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground relative">
+          <SiteNavLinks />
           <Button asChild size="sm">
             <Link href="/#featured-tools">Get started</Link>
           </Button>

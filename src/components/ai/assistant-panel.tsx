@@ -69,7 +69,7 @@ export function AssistantPanel() {
     return (
       <button 
         onClick={toggle}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl transition-transform hover:scale-110 active:scale-95"
+        className="fixed bottom-24 md:bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl transition-transform hover:scale-110 active:scale-95"
         aria-label="Open AI Assistant"
       >
         <Sparkles className="h-6 w-6" />
@@ -78,7 +78,7 @@ export function AssistantPanel() {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 z-50 flex h-[500px] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom-5">
+    <Card className="fixed bottom-24 md:bottom-6 right-6 z-50 flex h-[500px] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom-5">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3">
         <div className="flex items-center gap-2">

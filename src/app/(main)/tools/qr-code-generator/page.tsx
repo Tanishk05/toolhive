@@ -63,18 +63,22 @@ export default async function QrCodeGeneratorPage() {
         <Breadcrumbs items={breadcrumbs} />
       </div>
 
-      {/* Header section similar to the dynamic shell, but tailored */}
-      <section className="mb-4">
-        <Card className="overflow-hidden p-8">
-          <div className={`mb-6 inline-flex rounded-3xl bg-linear-to-br ${tool.accent} p-4 ring-1 ring-white/10`}>
-            <QrCode className="h-8 w-8 text-white" aria-hidden="true" />
+      {/* Redesigned Compact Hero Section */}
+      <section className="mb-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div className="flex items-start gap-4">
+          <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${tool.accent} shadow-sm ring-1 ring-border`}>
+            <QrCode className="h-6 w-6 text-white" aria-hidden="true" />
           </div>
-          <div className="space-y-4">
-            <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">{tool.categoryLabel}</p>
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">{tool.name}</h1>
-            <p className="max-w-3xl text-base leading-7 text-slate-300">{tool.description}</p>
+          <div>
+            <p className="text-sm font-semibold text-primary mb-1">{tool.categoryLabel}</p>
+            <h1 className="text-5xl font-bold tracking-tight text-foreground">{tool.name}</h1>
+            <p className="mt-2 max-w-2xl text-base text-muted-foreground leading-[1.7]">{tool.description}</p>
           </div>
-        </Card>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="hidden md:flex">Share</Button>
+          <FavoriteButton toolSlug={tool.slug} />
+        </div>
       </section>
 
       {/* Interactive Tool Section */}
@@ -85,40 +89,40 @@ export default async function QrCodeGeneratorPage() {
       <section className="mt-8">
         <div className="mx-auto max-w-3xl space-y-12 py-12">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">How to use the QR Code Generator</h2>
-            <div className="mt-6 space-y-6 text-slate-300 leading-7">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">How to use the QR Code Generator</h2>
+            <div className="mt-6 space-y-6 text-muted-foreground leading-[1.7]">
               <p>
                 Our Free Online QR Code Generator makes it easy to create high-quality, custom QR codes for your business, website, or personal use.
               </p>
               <ul className="space-y-4 list-none pl-0">
                 <li className="flex items-start">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-400 ring-1 ring-emerald-500/20">1</span>
-                  <span className="ml-3"><strong>Enter your Content:</strong> Type or paste the URL, text, or data you want to encode into the QR code.</span>
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary ring-1 ring-primary/20">1</span>
+                  <span className="ml-3"><strong className="text-foreground">Enter your Content:</strong> Type or paste the URL, text, or data you want to encode into the QR code.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-400 ring-1 ring-emerald-500/20">2</span>
-                  <span className="ml-3"><strong>Customize the Design (Optional):</strong> Change the foreground and background colors to fit your brand identity. Adjust the size and error correction level if needed.</span>
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary ring-1 ring-primary/20">2</span>
+                  <span className="ml-3"><strong className="text-foreground">Customize the Design (Optional):</strong> Change the foreground and background colors to fit your brand identity. Adjust the size and error correction level if needed.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-400 ring-1 ring-emerald-500/20">3</span>
-                  <span className="ml-3"><strong>Download:</strong> Click the download button to save your QR code as a high-resolution PNG or SVG file, ready for printing or sharing online.</span>
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary ring-1 ring-primary/20">3</span>
+                  <span className="ml-3"><strong className="text-foreground">Download:</strong> Click the download button to save your QR code as a high-resolution PNG or SVG file, ready for printing or sharing online.</span>
                 </li>
               </ul>
             </div>
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Frequently Asked Questions</h2>
-            <div className="mt-6 divide-y divide-white/10 border-y border-white/10">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">Frequently Asked Questions</h2>
+            <div className="mt-6 divide-y divide-border border-y border-border">
               {faqs.map((faq, index) => (
                 <details key={index} className="group [&_summary::-webkit-details-marker]:hidden">
-                  <summary className="flex cursor-pointer items-center justify-between py-6 text-base font-medium text-white">
+                  <summary className="flex cursor-pointer items-center justify-between py-6 text-base font-medium text-foreground">
                     {faq.question}
-                    <span className="ml-6 flex h-7 w-7 items-center justify-center rounded-full bg-white/5 transition group-open:rotate-180">
-                      <ChevronDown className="h-4 w-4 text-slate-400" />
+                    <span className="ml-6 flex h-7 w-7 items-center justify-center rounded-full bg-muted transition group-open:rotate-180">
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
                     </span>
                   </summary>
-                  <div className="pb-6 pr-12 text-sm text-slate-300 leading-7">
+                  <div className="pb-6 pr-12 text-sm text-muted-foreground leading-7">
                     {faq.answer}
                   </div>
                 </details>
@@ -132,10 +136,10 @@ export default async function QrCodeGeneratorPage() {
       <section className="mt-8">
         <Card className="space-y-6 p-6">
           <div className="flex items-start gap-3">
-            <BadgeInfo className="mt-1 h-5 w-5 text-emerald-300" aria-hidden="true" />
+            <BadgeInfo className="mt-1 h-5 w-5 text-primary" aria-hidden="true" />
             <div>
-              <h2 className="text-lg font-semibold text-white">Registry metadata</h2>
-              <p className="mt-1 text-sm leading-6 text-slate-400">
+              <h2 className="text-lg font-semibold text-foreground">Registry metadata</h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 This is a fully integrated module running client-side for zero-latency generation.
               </p>
             </div>

@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { ToolAnalytics } from "@/components/analytics/tool-analytics";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/features/tools/components/favorite-button";
+import { CollectionButton } from "@/features/collections/components/collection-button";
 import { ToolRating } from "@/components/tools/tool-rating";
 import { Card } from "@/components/ui/card";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -70,13 +71,13 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
         <Breadcrumbs items={breadcrumbs} />
       </div>
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-        <Card className="overflow-hidden p-8">
-          <div className={`mb-6 inline-flex rounded-3xl bg-linear-to-br ${tool.accent} p-4 ring-1 ring-white/10`}>
-            <ToolIcon name={iconName} className="h-8 w-8 text-white" />
+        <Card className="overflow-hidden p-4 md:p-6">
+          <div className={`mb-3 inline-flex rounded-2xl bg-linear-to-br ${tool.accent} p-3 ring-1 ring-white/10`}>
+            <ToolIcon name={iconName} className="h-6 w-6 text-white" />
           </div>
           <div className="space-y-4">
             <p className="text-xs font-medium tracking-[0.32em] text-emerald-300 uppercase">{tool.categoryLabel}</p>
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Free Online {tool.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Free Online {tool.name}</h1>
             <ToolRating slug={tool.slug} />
             <p className="max-w-3xl text-base leading-7 text-slate-300">{tool.seo.description || tool.description}</p>
             <p className="max-w-3xl text-sm leading-6 text-slate-400">{tool.summary}</p>
@@ -98,6 +99,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
               <Link href="/tools">Back to tools</Link>
             </Button>
             <FavoriteButton toolSlug={tool.slug} />
+            <CollectionButton toolSlug={tool.slug} />
           </div>
         </Card>
 
@@ -124,7 +126,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
       {seoContent && (
         <section className="grid gap-8 lg:grid-cols-2">
           {seoContent.howToUse.length > 0 && (
-            <Card className="p-8">
+            <Card className="p-4 md:p-6">
               <h2 className="mb-6 text-2xl font-semibold text-white">How to Use {tool.name}</h2>
               <ol className="space-y-6">
                 {seoContent.howToUse.map((step, index) => (
@@ -144,7 +146,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
 
           <div className="space-y-8">
             {seoContent.benefits.length > 0 && (
-              <Card className="p-8">
+              <Card className="p-4 md:p-6">
                 <h2 className="mb-6 text-2xl font-semibold text-white">Why Use Our {tool.name}?</h2>
                 <ul className="space-y-4">
                   {seoContent.benefits.map((benefit, index) => (
@@ -158,7 +160,7 @@ export default async function ToolDetailsPage({ params }: Readonly<{ params: Pro
             )}
 
             {seoContent.faqs.length > 0 && (
-              <Card className="p-8">
+              <Card className="p-4 md:p-6">
                 <h2 className="mb-6 text-2xl font-semibold text-white">Frequently Asked Questions</h2>
                 <div className="space-y-6">
                   {seoContent.faqs.map((faq, index) => (

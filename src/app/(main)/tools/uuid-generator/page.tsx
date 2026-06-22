@@ -63,14 +63,14 @@ export default async function UuidGeneratorPage() {
         <Breadcrumbs items={breadcrumbs} />
       </div>
 
-      <section className="mb-4">
-        <Card className="overflow-hidden p-8 border-border bg-card">
-          <div className={`mb-6 inline-flex rounded-3xl bg-linear-to-br ${tool.accent} p-4 ring-1 ring-border`}>
-            <Fingerprint className="h-8 w-8 text-foreground" aria-hidden="true" />
+      <section className="mb-2">
+        <Card className="overflow-hidden p-4 md:p-6 border-border bg-card">
+          <div className={`mb-3 inline-flex rounded-2xl bg-linear-to-br ${tool.accent} p-3 ring-1 ring-border`}>
+            <Fingerprint className="h-6 w-6 text-foreground" aria-hidden="true" />
           </div>
           <div className="space-y-4">
             <p className="text-xs font-medium tracking-[0.32em] text-primary uppercase">{tool.categoryLabel}</p>
-            <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">{tool.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{tool.name}</h1>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">{tool.description}</p>
           </div>
         </Card>

@@ -13,7 +13,27 @@ export default async function DashboardPage() {
   const user = await currentUser();
 
   if (!user) {
-    redirect("/sign-in");
+    return (
+      <div className="container mx-auto flex max-w-md flex-col items-center justify-center py-24 text-center">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+          <svg className="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h1 className="mb-3 text-2xl font-bold text-foreground">Sync Your Workspace</h1>
+        <p className="mb-8 text-muted-foreground">
+          Create an account to sync your tools across devices, view usage statistics, and access your productivity hub.
+        </p>
+        <div className="flex gap-4">
+          <a href="/sign-in" className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+            Sign In
+          </a>
+          <a href="/sign-up" className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
+            Sign Up
+          </a>
+        </div>
+      </div>
+    );
   }
 
   const dbUser = await prisma.user.findUnique({

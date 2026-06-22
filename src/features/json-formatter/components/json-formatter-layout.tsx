@@ -137,18 +137,18 @@ export function JsonFormatterLayout() {
 
         {/* Output Section */}
         <Card className="flex flex-col overflow-hidden border-border bg-card shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/30 px-4 py-3">
+          <div className="sticky bottom-16 z-40 flex flex-wrap items-center justify-between gap-2 border-b md:border-y-0 border-t border-border bg-background/95 backdrop-blur px-4 py-3 md:static md:bg-muted/30">
             <div className="flex items-center gap-2">
               <button
                 onClick={handleFormat}
-                className="flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
+                className="flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20 shadow-sm"
               >
                 <Wand2 className="h-3.5 w-3.5" />
                 Format
               </button>
               <button
                 onClick={handleMinify}
-                className="flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground shadow-sm"
               >
                 <Minimize2 className="h-3.5 w-3.5" />
                 Minify
@@ -158,7 +158,7 @@ export function JsonFormatterLayout() {
             <button
               onClick={handleCopy}
               disabled={!output}
-              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50 shadow-sm"
             >
               {copied ? (
                 <>

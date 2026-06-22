@@ -30,6 +30,7 @@
     "date-fns": "^4.4.0",
     "framer-motion": "^12.40.0",
     "github-slugger": "^2.0.0",
+    "glob": "^13.0.6",
     "gray-matter": "^4.0.3",
     "hast-util-to-string": "^3.0.1",
     "jspdf": "^4.2.1",

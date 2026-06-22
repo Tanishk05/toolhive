@@ -92,7 +92,7 @@ export function DashboardClient({ initialFavorites, initialActivity }: any) {
               </div>
               <h3 className="text-lg font-medium text-foreground">No tools found</h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md">
-                {searchQuery ? "No tools match your search criteria. Try adjusting your filters." : "You haven't saved any tools yet. Browse our collection and save your favorites here."}
+                {searchQuery ? "No tools match your search criteria. Try adjusting your filters." : "Start saving tools you use often."}
               </p>
               {!searchQuery && (
                 <Button asChild className="mt-6">

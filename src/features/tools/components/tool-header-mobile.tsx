@@ -8,6 +8,7 @@ import { useFavoritesStore } from "@/stores/use-favorites-store";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import { CollectionButton } from "@/features/collections/components/collection-button";
 
 export function ToolHeaderMobile({
   toolName,
@@ -69,23 +70,28 @@ export function ToolHeaderMobile({
   };
 
   return (
-    <div className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border/50 bg-background/80 px-4 backdrop-blur-xl md:hidden">
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full -ml-2" onClick={() => router.back()}>
-          <ChevronLeft className="h-5 w-5" />
+    <div className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-border/50 bg-background/80 px-4 backdrop-blur-xl md:hidden">
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="h-11 w-11 rounded-full -ml-3" onClick={() => router.back()} aria-label="Go back">
+          <ChevronLeft className="h-6 w-6" />
         </Button>
         <div className="flex items-center gap-2">
-          <ToolIcon name={iconName as any} className="h-4 w-4 text-primary" />
+          <ToolIcon name={iconName as any} className="h-5 w-5 text-primary" />
           <span className="font-semibold text-sm truncate max-w-[150px]">{toolName}</span>
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={handleShare}>
-          <Share className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-11 w-11 rounded-full" onClick={handleShare} aria-label="Share tool">
+          <Share className="h-5 w-5" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={handleFavorite}>
-          {isFav ? <BookmarkCheck className="h-4 w-4 text-primary" /> : <Bookmark className="h-4 w-4" />}
-        </Button>
+        {user && (
+          <>
+            <CollectionButton toolSlug={toolSlug} iconOnly />
+            <Button variant="ghost" size="icon" className="h-11 w-11 rounded-full" onClick={handleFavorite} aria-label={isFav ? "Remove from favorites" : "Add to favorites"}>
+              {isFav ? <BookmarkCheck className="h-5 w-5 text-primary" /> : <Bookmark className="h-5 w-5" />}
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

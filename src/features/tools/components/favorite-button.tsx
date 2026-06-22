@@ -74,6 +74,10 @@ export function FavoriteButton({ toolSlug, className, variant = "outline", size 
     setIsMutating(false);
   };
 
+  if (isAuthLoaded && !userId) {
+    return null;
+  }
+
   return (
     <Button
       variant={variant}

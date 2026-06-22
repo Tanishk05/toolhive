@@ -5,11 +5,11 @@ import { cn } from "@/lib/utils";
 const cardVariants = cva("rounded-[var(--radius)] text-card-foreground transition-all duration-300", {
   variants: {
     variant: {
-      default: "bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.2),0_8px_32px_rgba(0,0,0,0.12)]",
-      elevated: "bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2),0_16px_64px_rgba(0,0,0,0.16)]",
-      glass: "bg-white/[0.03] backdrop-blur-2xl shadow-[0_2px_16px_rgba(0,0,0,0.12)]",
+      default: "bg-card border border-border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),0_8px_24px_rgba(0,0,0,0.3)]",
+      elevated: "bg-card border border-border shadow-[0_4px_12px_rgba(0,0,0,0.06),0_12px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3),0_12px_32px_rgba(0,0,0,0.4)]",
+      glass: "bg-white/[0.03] backdrop-blur-2xl shadow-[0_2px_16px_rgba(0,0,0,0.04)]",
       floating:
-        "bg-surface shadow-[0_2px_12px_rgba(0,0,0,0.15),0_12px_48px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2),0_24px_80px_rgba(0,0,0,0.16),0_0_0_1px_rgba(143,175,147,0.06)]",
+        "bg-card border border-border shadow-[0_2px_8px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06),0_12px_48px_rgba(0,0,0,0.08)] transition-all duration-300",
       outline: "border border-border bg-transparent",
     },
     padding: {

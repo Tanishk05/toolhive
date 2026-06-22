@@ -33,8 +33,8 @@ export function QrContentForm({ data, onChange }: Props) {
             onClick={() => onChange({ format: f.value })}
             className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
               data.format === f.value
-                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300"
-                : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/10"
+                ? "border-primary/30 bg-primary/10 text-primary"
+                : "border-transparent bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
             }`}
           >
             {f.icon}
@@ -43,11 +43,11 @@ export function QrContentForm({ data, onChange }: Props) {
         ))}
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-5">
+      <div className="rounded-2xl border border-border bg-surface p-5">
         {/* URL */}
         {data.format === "url" && (
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Website URL</label>
+            <label className="text-sm font-medium text-foreground">Website URL</label>
             <Input
               value={data.url}
               onChange={(e) => onChange({ url: e.target.value })}
@@ -59,7 +59,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {/* Text */}
         {data.format === "text" && (
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Plain Text</label>
+            <label className="text-sm font-medium text-foreground">Plain Text</label>
             <Textarea
               value={data.text}
               onChange={(e) => onChange({ text: e.target.value })}
@@ -73,7 +73,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {data.format === "email" && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Email Address</label>
+              <label className="text-sm font-medium text-foreground">Email Address</label>
               <Input
                 type="email"
                 value={data.emailAddress}
@@ -82,7 +82,7 @@ export function QrContentForm({ data, onChange }: Props) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Subject</label>
+              <label className="text-sm font-medium text-foreground">Subject</label>
               <Input
                 value={data.emailSubject}
                 onChange={(e) => onChange({ emailSubject: e.target.value })}
@@ -90,7 +90,7 @@ export function QrContentForm({ data, onChange }: Props) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Body</label>
+              <label className="text-sm font-medium text-foreground">Body</label>
               <Textarea
                 value={data.emailBody}
                 onChange={(e) => onChange({ emailBody: e.target.value })}
@@ -103,7 +103,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {/* Phone */}
         {data.format === "phone" && (
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Phone Number</label>
+            <label className="text-sm font-medium text-foreground">Phone Number</label>
             <Input
               type="tel"
               value={data.phoneNumber}
@@ -117,7 +117,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {data.format === "sms" && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Phone Number</label>
+              <label className="text-sm font-medium text-foreground">Phone Number</label>
               <Input
                 type="tel"
                 value={data.smsNumber}
@@ -126,7 +126,7 @@ export function QrContentForm({ data, onChange }: Props) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Message</label>
+              <label className="text-sm font-medium text-foreground">Message</label>
               <Textarea
                 value={data.smsMessage}
                 onChange={(e) => onChange({ smsMessage: e.target.value })}
@@ -140,7 +140,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {data.format === "whatsapp" && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">WhatsApp Number</label>
+              <label className="text-sm font-medium text-foreground">WhatsApp Number</label>
               <Input
                 type="tel"
                 value={data.whatsappNumber}
@@ -149,7 +149,7 @@ export function QrContentForm({ data, onChange }: Props) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Message</label>
+              <label className="text-sm font-medium text-foreground">Message</label>
               <Textarea
                 value={data.whatsappMessage}
                 onChange={(e) => onChange({ whatsappMessage: e.target.value })}
@@ -163,7 +163,7 @@ export function QrContentForm({ data, onChange }: Props) {
         {data.format === "wifi" && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Network Name (SSID)</label>
+              <label className="text-sm font-medium text-foreground">Network Name (SSID)</label>
               <Input
                 value={data.wifiSsid}
                 onChange={(e) => onChange({ wifiSsid: e.target.value })}
@@ -171,7 +171,7 @@ export function QrContentForm({ data, onChange }: Props) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Password</label>
+              <label className="text-sm font-medium text-foreground">Password</label>
               <Input
                 type="password"
                 value={data.wifiPassword}
@@ -181,7 +181,7 @@ export function QrContentForm({ data, onChange }: Props) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Encryption</label>
+                <label className="text-sm font-medium text-foreground">Encryption</label>
                 <Select
                   value={data.wifiEncryption}
                   onChange={(e) => onChange({ wifiEncryption: e.target.value as "WPA" | "WEP" | "nopass" })}
@@ -197,9 +197,9 @@ export function QrContentForm({ data, onChange }: Props) {
                   id="wifiHidden"
                   checked={data.wifiHidden}
                   onChange={(e) => onChange({ wifiHidden: e.target.checked })}
-                  className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-500 focus:ring-emerald-500/50"
+                  className="h-4 w-4 rounded border-border bg-background text-primary focus:ring-primary/50"
                 />
-                <label htmlFor="wifiHidden" className="text-sm text-slate-300">
+                <label htmlFor="wifiHidden" className="text-sm text-foreground">
                   Hidden Network
                 </label>
               </div>
@@ -212,7 +212,7 @@ export function QrContentForm({ data, onChange }: Props) {
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">First Name</label>
+                <label className="text-sm font-medium text-foreground">First Name</label>
                 <Input
                   value={data.vcardFirstName}
                   onChange={(e) => onChange({ vcardFirstName: e.target.value })}
@@ -220,7 +220,7 @@ export function QrContentForm({ data, onChange }: Props) {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Last Name</label>
+                <label className="text-sm font-medium text-foreground">Last Name</label>
                 <Input
                   value={data.vcardLastName}
                   onChange={(e) => onChange({ vcardLastName: e.target.value })}
@@ -230,7 +230,7 @@ export function QrContentForm({ data, onChange }: Props) {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Phone</label>
+                <label className="text-sm font-medium text-foreground">Phone</label>
                 <Input
                   value={data.vcardPhone}
                   onChange={(e) => onChange({ vcardPhone: e.target.value })}
@@ -238,7 +238,7 @@ export function QrContentForm({ data, onChange }: Props) {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Email</label>
+                <label className="text-sm font-medium text-foreground">Email</label>
                 <Input
                   type="email"
                   value={data.vcardEmail}
@@ -249,7 +249,7 @@ export function QrContentForm({ data, onChange }: Props) {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Company</label>
+                <label className="text-sm font-medium text-foreground">Company</label>
                 <Input
                   value={data.vcardCompany}
                   onChange={(e) => onChange({ vcardCompany: e.target.value })}
@@ -257,7 +257,7 @@ export function QrContentForm({ data, onChange }: Props) {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Title</label>
+                <label className="text-sm font-medium text-foreground">Title</label>
                 <Input
                   value={data.vcardTitle}
                   onChange={(e) => onChange({ vcardTitle: e.target.value })}
@@ -266,7 +266,7 @@ export function QrContentForm({ data, onChange }: Props) {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Website</label>
+              <label className="text-sm font-medium text-foreground">Website</label>
               <Input
                 value={data.vcardWebsite}
                 onChange={(e) => onChange({ vcardWebsite: e.target.value })}
