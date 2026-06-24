@@ -41,8 +41,11 @@ export function ImageResizerLayout() {
   // Read the selected file into an image
   useEffect(() => {
     if (!imageFile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setImageSrc(null);
+       
       setOriginalWidth(0);
+       
       setOriginalHeight(0);
       return;
     }
@@ -190,7 +193,7 @@ export function ImageResizerLayout() {
               </div>
               {/* Image Preview Container */}
               <div className="flex w-full items-center justify-center p-4 min-h-[300px]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                { }
                 <img 
                   src={imageSrc} 
                   alt="Preview" 

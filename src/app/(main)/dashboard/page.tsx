@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { getToolRegistry } from "@/features/tools/tool-registry";
@@ -25,12 +26,12 @@ export default async function DashboardPage() {
           Create an account to sync your tools across devices, view usage statistics, and access your productivity hub.
         </p>
         <div className="flex gap-4">
-          <a href="/sign-in" className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+          <Link href="/sign-in" className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
             Sign In
-          </a>
-          <a href="/sign-up" className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
+          </Link>
+          <Link href="/sign-up" className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
             Sign Up
-          </a>
+          </Link>
         </div>
       </div>
     );

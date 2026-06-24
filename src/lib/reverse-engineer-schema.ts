@@ -1,0 +1,88 @@
+import { z } from 'zod';
+
+export const reverseEngineerSchema = z.object({
+  visualDesign: z.object({
+    primaryColors: z.array(z.string()).describe("Hex codes for primary colors"),
+    secondaryColors: z.array(z.string()).describe("Hex codes for secondary colors"),
+    accentColors: z.array(z.string()).describe("Hex codes for accent colors"),
+    gradientStyles: z.string().describe("Description of gradients used"),
+    borderRadiusSystem: z.string().describe("Description of border radius usage"),
+    shadowStyles: z.string().describe("Description of shadow styles used"),
+    spacingSystem: z.string().describe("Description of layout spacing and density"),
+  }).optional(),
+  typography: z.object({
+    headlineFonts: z.array(z.string()),
+    bodyFonts: z.array(z.string()),
+    fontPairings: z.string().describe("How the fonts are paired together"),
+    fontSizes: z.string().describe("Overview of font sizing hierarchy"),
+    fontWeights: z.string().describe("Usage of different font weights"),
+    lineHeights: z.string().describe("Overview of line height practices"),
+    googleFontAlternatives: z.array(z.string()).describe("Google Font alternatives if custom fonts are used"),
+  }).optional(),
+  uxBreakdown: z.object({
+    layoutStructure: z.string(),
+    navigationStyle: z.string(),
+    ctaPlacement: z.string(),
+    conversionElements: z.array(z.string()),
+    trustSignals: z.array(z.string()),
+    userJourney: z.string(),
+    uxScore: z.number().min(1).max(100),
+    accessibilityScore: z.number().min(1).max(100),
+    mobileFriendlinessScore: z.number().min(1).max(100),
+    conversionScore: z.number().min(1).max(100),
+  }).optional(),
+  techStack: z.object({
+    framework: z.string(),
+    cms: z.string().optional(),
+    hostingProvider: z.string().optional(),
+    analyticsTools: z.array(z.string()),
+    cdn: z.string().optional(),
+    uiLibraries: z.array(z.string()),
+    animationLibraries: z.array(z.string()),
+    authenticationSystems: z.string().optional(),
+  }).optional(),
+  copywriting: z.object({
+    headlines: z.array(z.string()),
+    subheadlines: z.array(z.string()),
+    ctaText: z.array(z.string()),
+    valuePropositions: z.array(z.string()),
+    marketingFramework: z.string().describe("e.g. AIDA, PAS, StoryBrand"),
+    whyItWorks: z.string(),
+    weaknesses: z.string(),
+    improvements: z.string(),
+  }).optional(),
+  seoAnalysis: z.object({
+    metaTitle: z.string(),
+    metaDescription: z.string(),
+    headingStructure: z.string(),
+    keywordOpportunities: z.array(z.string()),
+    performanceRecommendations: z.array(z.string()),
+    seoScore: z.number().min(1).max(100),
+  }).optional(),
+  aiRecreationPrompt: z.object({
+    uiPrompt: z.string().describe("Prompt for an AI to recreate the overall UI"),
+    componentPrompt: z.string().describe("Prompt for specific component recreation"),
+    animationPrompt: z.string().describe("Prompt for AI to recreate the animations"),
+  }).optional(),
+  developerBlueprint: z.object({
+    folderStructure: z.string().describe("Suggested Next.js/React folder structure"),
+    recommendedComponents: z.array(z.string()),
+    suggestedLibraries: z.array(z.string()),
+    apiArchitecture: z.string(),
+    databaseSuggestions: z.string(),
+  }).optional(),
+  competitorAnalysis: z.object({
+    similarWebsites: z.array(z.string()),
+    similarStartups: z.array(z.string()),
+    betterDesignExamples: z.array(z.string()),
+  }).optional(),
+  designRoast: z.object({
+    whatWorks: z.string(),
+    whatDoesnt: z.string(),
+    conversionBottlenecks: z.array(z.string()),
+    accessibilityIssues: z.array(z.string()),
+    modernizationSuggestions: z.array(z.string()),
+  }).optional(),
+});
+
+export type ReverseEngineerAnalysis = z.infer<typeof reverseEngineerSchema>;

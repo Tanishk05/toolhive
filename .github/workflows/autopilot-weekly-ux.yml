@@ -1,0 +1,31 @@
+name: ToolHive Autopilot Weekly UX
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 4 * * 1"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: autopilot-weekly-ux
+  cancel-in-progress: false
+
+jobs:
+  weekly-ux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run autopilot:weekly-ux
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AUTOPILOT_DRY_RUN: "false"
+          GITHUB_REPOSITORY: ${{ github.repository }}

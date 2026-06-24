@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Layers, Lightbulb, CheckCircle2, Share2 } from "lucide-react";
+import { Layers, Lightbulb, CheckCircle2, Share2 } from "lucide-react";
 import { curatedToolkits } from "@/constants/toolkits";
-import { getToolRegistry, getIconName } from "@/features/tools/tool-registry";
+import { getToolRegistry } from "@/features/tools/tool-registry";
 import { ToolCard } from "@/components/marketing/tool-card";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

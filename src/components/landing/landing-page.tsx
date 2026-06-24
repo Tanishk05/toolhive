@@ -13,7 +13,6 @@ import Link from "next/link";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/ui/search";
-import { ToolCard } from "@/components/marketing/tool-card";
 import { AdUnit } from "@/components/ads/ad-unit";
 import { Reveal } from "@/components/ui/reveal-animation";
 import { type getLandingContent } from "@/constants/landing-content";

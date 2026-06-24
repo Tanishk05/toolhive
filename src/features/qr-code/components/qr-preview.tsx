@@ -1,7 +1,7 @@
 "use client";
 
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
-import { FileImage, FileType, FileText, Copy, Share2, Download } from "lucide-react";
+import { FileImage, FileType, FileText, Copy, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QrSettings } from "./qr-customization";
 import { downloadPng, downloadSvg, downloadPdf } from "../lib/qr-export";

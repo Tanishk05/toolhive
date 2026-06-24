@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
-import { SignOutButton, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { SignOutButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { 
   User, Settings, Bell, Folder, History,
   LayoutGrid, TrendingUp, Sparkles, Star,
@@ -91,7 +91,7 @@ export default async function MorePage() {
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 overflow-hidden rounded-full border border-border shrink-0">
                 {user.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
+                   
                   <img src={user.imageUrl} alt={user.fullName || "User"} className="h-full w-full object-cover" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-primary/10 text-primary">

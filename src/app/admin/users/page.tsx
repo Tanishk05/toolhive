@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 export const runtime = "nodejs";
 import { prisma } from "@/lib/prisma";
 import { UserRoleSelect } from "@/components/admin/user-role-select";

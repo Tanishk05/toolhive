@@ -44,7 +44,7 @@ export function RegexTesterLayout() {
   const { matchCount, highlighted, errorMsg } = useMemo(() => {
     if (!pattern) return { matchCount: 0, highlighted: testString, errorMsg: null };
 
-    let extractedParts: { type: 'text' | 'match', value: string, index: number }[] = [];
+    const extractedParts: { type: 'text' | 'match', value: string, index: number }[] = [];
     let currentMatchCount = 0;
     let localErrorMsg: string | null = null;
 
@@ -106,7 +106,7 @@ export function RegexTesterLayout() {
     }, 2000);
     timerRef.current = timer;
     return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [pattern, flags]);
 
   const handleCopy = async () => {

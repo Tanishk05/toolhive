@@ -22,6 +22,32 @@ enum PaymentStatus {
   refunded
 }
 
+enum AutopilotArea {
+  tools
+  ecosystem
+  seo
+  ux
+  competitors
+  revenue
+  engineering
+}
+
+enum AutopilotRunStatus {
+  started
+  completed
+  failed
+  skipped
+}
+
+enum AutopilotRecommendationStatus {
+  proposed
+  issue_created
+  pr_created
+  accepted
+  rejected
+  shipped
+}
+
 model User {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   clerkId         String?          @unique
@@ -42,6 +68,8 @@ model User {
   auditLogs        AuditLog[]
   collections      Collection[]
   ratings          ToolRating[]
+  startupKits      StartupKit[]
+  reverseAnalyses  ReverseAnalysis[]
 }
 
 model SavedTool {
@@ -211,8 +239,20 @@ model Collection {
   name        String
   slug        String   @unique
   description String?
+  coverImage  String?
   isPublic    Boolean  @default(false)
+  isEditorPick Boolean @default(false)
   tools       String[]
+  
+  views       Int      @default(0)
+  likesCount  Int      @default(0)
+  bookmarksCount Int   @default(0)
+  
+  likedBy     String[] @default([]) // Array of User IDs
+  bookmarkedBy String[] @default([]) // Array of User IDs
+  followers   String[] @default([]) // Array of User IDs
+  collaborators String[] @default([]) // Array of User IDs
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -243,4 +283,73 @@ model Toolkit {
   creatorId   String?  @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model StartupKit {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String?  @db.ObjectId
+  user        User?    @relation(fields: [userId], references: [id])
+  idea        String
+  name        String
+  content     Json
+  isPublic    Boolean  @default(false)
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ReverseAnalysis {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String?  @db.ObjectId
+  user        User?    @relation(fields: [userId], references: [id])
+  targetUrl   String?
+  targetImage String?  // URL to stored image or just metadata
+  content     Json
+  isPublic    Boolean  @default(false)
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AutopilotRun {
+  id             String             @id @default(auto()) @map("_id") @db.ObjectId
+  area           AutopilotArea
+  status         AutopilotRunStatus @default(started)
+  source         String
+  summary        String?
+  githubIssueUrl String?
+  githubPrUrl    String?
+  input          Json?
+  output         Json?
+  error          String?
+  startedAt      DateTime           @default(now())
+  completedAt    DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([area, createdAt])
+  @@index([status, createdAt])
+}
+
+model AutopilotRecommendation {
+  id             String                         @id @default(auto()) @map("_id") @db.ObjectId
+  area           AutopilotArea
+  title          String
+  summary        String
+  impact         String
+  effort         String
+  technicalRisk  String
+  businessValue  String
+  priority       Int
+  status         AutopilotRecommendationStatus @default(proposed)
+  sourceUrls     String[]                       @default([])
+  targetPaths    String[]                       @default([])
+  githubIssueUrl String?
+  githubPrUrl    String?
+  metadata       Json?
+  createdAt      DateTime                       @default(now())
+  updatedAt      DateTime                       @updatedAt
+
+  @@index([area, priority, createdAt])
+  @@index([status, createdAt])
 }

@@ -1,0 +1,36 @@
+name: ToolHive Autopilot Low-Risk PRs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 10 * * *"
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
+
+concurrency:
+  group: autopilot-low-risk-prs
+  cancel-in-progress: false
+
+jobs:
+  low-risk-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: git config user.name "toolhive-autopilot"
+      - run: git config user.email "toolhive-autopilot@users.noreply.github.com"
+      - run: npm run autopilot:low-risk-prs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AUTOPILOT_DRY_RUN: "false"
+          AUTOPILOT_ALLOW_PR: "true"
+          GITHUB_REPOSITORY: ${{ github.repository }}

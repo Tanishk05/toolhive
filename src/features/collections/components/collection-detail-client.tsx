@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Copy, Settings, Trash2, Globe, Lock, ArrowRight, Check, Plus } from "lucide-react";
+import { Copy, Trash2, Globe, Lock, ArrowRight, Check, Plus, Download } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { ToolIcon } from "@/features/tools/components/tool-icon";
 import { getIconName } from "@/features/tools/tool-registry";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 export function CollectionDetailClient({ collection, initialTools, isOwner, allTools }: any) {
   const [tools, setTools] = useState(initialTools);
   const [isPublic, setIsPublic] = useState(collection.isPublic);
@@ -141,10 +141,48 @@ export function CollectionDetailClient({ collection, initialTools, isOwner, allT
           )}
 
           {(isPublic || isOwner) && (
-            <Button variant={copied ? "default" : "outline"} onClick={handleShare}>
-              {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-              {copied ? "Copied!" : "Share"}
-            </Button>
+            <>
+              <Button variant={copied ? "default" : "outline"} onClick={handleShare}>
+                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                {copied ? "Copied!" : "Share"}
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    <Download className="mr-2 h-4 w-4" /> Export
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => {
+                    const md = `# ${collection.name}\n\n${collection.description || ''}\n\n## Tools\n\n${tools.map((t: any) => `- **${t.name}**: ${t.summary} (https://toolhive.com/tools/${t.slug})`).join('\n')}`;
+                    const blob = new Blob([md], { type: 'text/markdown' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${collection.slug}.md`;
+                    a.click();
+                  }}>
+                    Export as Markdown
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => {
+                    const csv = `Name,Summary,URL\n${tools.map((t: any) => `"${t.name}","${t.summary}","https://toolhive.com/tools/${t.slug}"`).join('\n')}`;
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${collection.slug}.csv`;
+                    a.click();
+                  }}>
+                    Export as CSV
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => {
+                    window.print();
+                  }}>
+                    Export as PDF
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           )}
         </div>
       </div>

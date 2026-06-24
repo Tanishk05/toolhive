@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/features/tools/components/tool-icon";
 import { useFavoritesStore } from "@/stores/use-favorites-store";
 import { toast } from "sonner";
-import { useState, useEffect } from "react";
+
 import { useUser } from "@clerk/nextjs";
 import { CollectionButton } from "@/features/collections/components/collection-button";
 
@@ -22,11 +22,7 @@ export function ToolHeaderMobile({
   const router = useRouter();
   const { user } = useUser();
   const { favorites, addFavorite, removeFavorite } = useFavoritesStore();
-  const [isFav, setIsFav] = useState(false);
-
-  useEffect(() => {
-    setIsFav(favorites.includes(toolSlug));
-  }, [toolSlug, favorites]);
+  const isFav = favorites.includes(toolSlug);
 
   const handleShare = async () => {
     try {
@@ -76,6 +72,7 @@ export function ToolHeaderMobile({
           <ChevronLeft className="h-6 w-6" />
         </Button>
         <div className="flex items-center gap-2">
+          { }
           <ToolIcon name={iconName as any} className="h-5 w-5 text-primary" />
           <span className="font-semibold text-sm truncate max-w-[150px]">{toolName}</span>
         </div>

@@ -14,7 +14,7 @@ export function TimestampConverterLayout() {
   const [mode, setMode] = useState<ConversionMode>("ts-to-date");
   
   // Current Time State
-  const [nowTs, setNowTs] = useState<number>(Math.floor(Date.now() / 1000));
+  const [nowTs, setNowTs] = useState<number>(0);
   
   // TS to Date State
   const [timestampInput, setTimestampInput] = useState<string>("");
@@ -25,6 +25,8 @@ export function TimestampConverterLayout() {
   const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNowTs(Math.floor(Date.now() / 1000));
     const timer = setInterval(() => {
       setNowTs(Math.floor(Date.now() / 1000));
     }, 1000);

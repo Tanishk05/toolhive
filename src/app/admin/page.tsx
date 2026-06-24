@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 export const runtime = "nodejs";
 
 import { Card } from "@/components/ui/card";

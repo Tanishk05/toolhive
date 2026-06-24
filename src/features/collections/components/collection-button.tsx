@@ -11,16 +11,11 @@ import { Input } from "@/components/ui/input";
 export function CollectionButton({ toolSlug, iconOnly }: { toolSlug: string; iconOnly?: boolean }) {
   const { isLoaded, userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+   
   const [collections, setCollections] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-
-  useEffect(() => {
-    if (isOpen && userId) {
-      fetchCollections();
-    }
-  }, [isOpen, userId]);
 
   const fetchCollections = async () => {
     setIsLoading(true);
@@ -37,6 +32,14 @@ export function CollectionButton({ toolSlug, iconOnly }: { toolSlug: string; ico
     }
   };
 
+  useEffect(() => {
+    if (isOpen && userId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchCollections();
+    }
+  }, [isOpen, userId]);
+
+   
   const toggleToolInCollection = async (collection: any) => {
     const hasTool = collection.tools.includes(toolSlug);
     const newTools = hasTool 
@@ -56,7 +59,7 @@ export function CollectionButton({ toolSlug, iconOnly }: { toolSlug: string; ico
       });
       if (!res.ok) throw new Error();
       toast.success(hasTool ? "Removed from collection" : "Added to collection");
-    } catch (err) {
+    } catch {
       // Revert optimistic update
       setCollections(collections.map(c => 
         c.id === collection.id ? { ...c, tools: collection.tools } : c
@@ -86,7 +89,7 @@ export function CollectionButton({ toolSlug, iconOnly }: { toolSlug: string; ico
         const error = await res.json();
         toast.error(error.error || "Failed to create collection");
       }
-    } catch (err) {
+    } catch {
       toast.error("An error occurred");
     } finally {
       setIsCreating(false);

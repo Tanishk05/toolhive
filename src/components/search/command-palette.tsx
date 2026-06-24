@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
-import { Search, Wrench, Folder, FileText, Bookmark, ArrowRight, X } from "lucide-react";
+import { Search, Folder, FileText, Bookmark, X } from "lucide-react";
 import { useSearchStore } from "@/stores/use-search-store";
 import { ToolIcon } from "@/features/tools/components/tool-icon";
 import { getIconName } from "@/features/tools/tool-registry";
 import { useFavoritesStore } from "@/stores/use-favorites-store";
-import { cn } from "@/lib/utils";
+
 
 interface SearchData {
   tools: any[];

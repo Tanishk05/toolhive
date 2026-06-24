@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { Search, Sparkles, Code, Calculator, Type, LineChart, RefreshCw, Layers } from "lucide-react";
+import { Sparkles, Code, Calculator, Type, LineChart, RefreshCw, Layers } from "lucide-react";
 import Link from "next/link";
 import { SearchTrigger } from "@/components/search/search-trigger";
 

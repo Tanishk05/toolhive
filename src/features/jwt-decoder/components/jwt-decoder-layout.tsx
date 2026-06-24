@@ -7,9 +7,9 @@ import { AdUnit } from "@/components/ads/ad-unit";
 import { analytics } from "@/lib/analytics";
 
 interface DecodedToken {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   header: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   payload: any;
   signature: string;
   isValid: boolean;
